@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  test-vitejs-dev:
+    container_name: test-vitejs-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/usr/src/app/src
