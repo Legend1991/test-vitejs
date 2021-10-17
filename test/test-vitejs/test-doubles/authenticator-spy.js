@@ -8,10 +8,12 @@ export default class AuthenticatorSpy {
   isSignedIn = false;
 
   async signIn(email, password) {
-    const args = JSON.stringify([email, password]);
-    this.log.push(`[Authenticator # signIn] args: ${args}`);
+    queueMicrotask(() => {
+      const args = JSON.stringify([email, password]);
+      this.log.push(`[Authenticator # signIn] args: ${args}`);
 
-    this.isSignedIn = email === AuthenticatorSpy.CORRECT_EMAIL
-      && password === AuthenticatorSpy.CORRECT_PASSWORD;
+      this.isSignedIn = email === AuthenticatorSpy.CORRECT_EMAIL
+        && password === AuthenticatorSpy.CORRECT_PASSWORD;
+    });
   }
 }
