@@ -57,6 +57,9 @@ export default class LoginPresenter {
     this.#emailError = '';
     this.#passwordError = '';
 
+    this.#emailTouched = true;
+    this.#passwordTouched = true;
+
     await this.#authenticator.signIn(this.#email, this.#password);
     // await new Promise(r => setTimeout(r, 5000));
 

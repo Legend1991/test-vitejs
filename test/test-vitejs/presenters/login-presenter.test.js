@@ -92,6 +92,35 @@ describe('LoginPresenter', () => {
 
       deepStrictEqual(viewModel, initialViewModel);
     });
+
+    it(`Validate email after sign-in click as it was focused out`, async () => {
+      presenter.onEmailChange('user@email');
+      await presenter.onSignInClick();
+      presenter.onEmailChange('user@email.com');
+
+      deepStrictEqual(viewModel, {
+        ...initialViewModel,
+        passwordError: LoginPresenter.BAD_SIGN_IN_MSG,
+        isPasswordInputStatePrimary: false,
+        isPasswordInputStateError: true
+      });
+    });
+
+    it(`Invalidate email after sign-in click as it was focused out`, async () => {
+      presenter.onEmailChange('u');
+      await presenter.onSignInClick();
+      presenter.onEmailChange('us');
+
+      deepStrictEqual(viewModel, {
+        ...initialViewModel,
+        emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
+        isEmailInputStatePrimary: false,
+        isEmailInputStateError: true,
+        passwordError: LoginPresenter.BAD_SIGN_IN_MSG,
+        isPasswordInputStatePrimary: false,
+        isPasswordInputStateError: true
+      });
+    });
   });
 
   describe('Password Input', () => {
@@ -149,6 +178,35 @@ describe('LoginPresenter', () => {
       presenter.onPasswordChange(CORRECT_LENGTH_PASSWORD);
 
       deepStrictEqual(viewModel, initialViewModel);
+    });
+
+    it(`Validate password after sign-in click as it was focused out`, async () => {
+      presenter.onPasswordChange('1234567');
+      await presenter.onSignInClick();
+      presenter.onPasswordChange('12345678');
+
+      deepStrictEqual(viewModel, {
+        ...initialViewModel,
+        emailError: LoginPresenter.BAD_SIGN_IN_MSG,
+        isEmailInputStatePrimary: false,
+        isEmailInputStateError: true
+      });
+    });
+
+    it(`Invalidate password after sign-in click as it was focused out`, async () => {
+      presenter.onPasswordChange('1');
+      await presenter.onSignInClick();
+      presenter.onPasswordChange('12');
+
+      deepStrictEqual(viewModel, {
+        ...initialViewModel,
+        emailError: LoginPresenter.BAD_SIGN_IN_MSG,
+        isEmailInputStatePrimary: false,
+        isEmailInputStateError: true,
+        passwordError: LoginPresenter.BAD_PASSWORD_LENGTH_MSG,
+        isPasswordInputStatePrimary: false,
+        isPasswordInputStateError: true
+      });
     });
   });
 
