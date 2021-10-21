@@ -37,8 +37,15 @@ describe('LoginPresenter', () => {
   });
 
   describe('Email Input', () => {
+    it(`Should not validate email until first focus out`, () => {
+      presenter.onEmailChange('u');
+
+      deepStrictEqual(viewModel, initialViewModel);
+    });
+
     it(`Invalidate empty email`, () => {
       presenter.onEmailChange('');
+      presenter.onEmailFocusOut();
 
       deepStrictEqual(viewModel, {
         ...initialViewModel,
@@ -50,6 +57,7 @@ describe('LoginPresenter', () => {
 
     it(`Invalidate wrong email`, () => {
       presenter.onEmailChange('user@email');
+      presenter.onEmailFocusOut();
 
       deepStrictEqual(viewModel, {
         ...initialViewModel,
@@ -61,6 +69,7 @@ describe('LoginPresenter', () => {
 
     it(`Validate correct email`, () => {
       presenter.onEmailChange('user@email.com');
+      presenter.onEmailFocusOut();
 
       deepStrictEqual(viewModel, initialViewModel);
     });
@@ -70,6 +79,7 @@ describe('LoginPresenter', () => {
       const CORRECT_FORMAT_EMAIL = 'user@email.com';
 
       presenter.onEmailChange(WRONG_FORMAT_EMAIL);
+      presenter.onEmailFocusOut();
 
       deepStrictEqual(viewModel, {
         ...initialViewModel,
@@ -85,8 +95,15 @@ describe('LoginPresenter', () => {
   });
 
   describe('Password Input', () => {
+    it(`Should not validate password until first focus out`, () => {
+      presenter.onPasswordChange('1');
+
+      deepStrictEqual(viewModel, initialViewModel);
+    });
+
     it(`Invalidate empty password`, () => {
       presenter.onPasswordChange('');
+      presenter.onPasswordFocusOut();
 
       deepStrictEqual(viewModel, {
         ...initialViewModel,
@@ -98,6 +115,7 @@ describe('LoginPresenter', () => {
 
     it(`Invalidate to short password length`, () => {
       presenter.onPasswordChange('1234567');
+      presenter.onPasswordFocusOut();
 
       deepStrictEqual(viewModel, {
         ...initialViewModel,
@@ -109,6 +127,7 @@ describe('LoginPresenter', () => {
 
     it(`Validate correct password length`, () => {
       presenter.onPasswordChange('12345678');
+      presenter.onPasswordFocusOut();
 
       deepStrictEqual(viewModel, initialViewModel);
     });
@@ -118,6 +137,7 @@ describe('LoginPresenter', () => {
       const CORRECT_LENGTH_PASSWORD = '12345678';
 
       presenter.onPasswordChange(WRONG_LENGTH_PASSWORD);
+      presenter.onPasswordFocusOut();
 
       deepStrictEqual(viewModel, {
         ...initialViewModel,

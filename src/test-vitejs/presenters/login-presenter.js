@@ -20,6 +20,8 @@ export default class LoginPresenter {
 
   #email = '';
   #password = '';
+  #emailTouched = false;
+  #passwordTouched = false;
 
   #authenticator = null;
   #navigator = null;
@@ -41,10 +43,12 @@ export default class LoginPresenter {
   }
 
   onEmailFocusOut() {
+    this.#emailTouched = true;
     this.#validateEmail();
   }
 
   onPasswordFocusOut() {
+    this.#passwordTouched = true;
     this.#validatePassword();
   }
 
@@ -86,6 +90,9 @@ export default class LoginPresenter {
   }
 
   #validateEmail() {
+    if (!this.#emailTouched)
+      return;
+
     const isEmailValid = this.#emailRegex.test(this.#email);
 
     this.#emailError = isEmailValid
@@ -93,6 +100,9 @@ export default class LoginPresenter {
   }
 
   #validatePassword() {
+    if (!this.#passwordTouched)
+      return;
+
     const isPasswordValid =
       this.#password.length >= LoginPresenter.MIN_PASSWORD_LENGTH;
 
