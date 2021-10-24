@@ -245,7 +245,7 @@ describe('LoginPresenter', () => {
       navigator.log = log;
     });
 
-    it(`Disable form, clear errors, try sign in, show errors, enable form`, async () => {
+    it(`Disable form, clear errors, try to sign-in, show errors, enable form`, async () => {
       presenter.onEmailChange(AuthenticatorSpy.WRONG_EMAIL);
       presenter.onPasswordChange(AuthenticatorSpy.WRONG_PASSWORD);
 
@@ -283,7 +283,7 @@ describe('LoginPresenter', () => {
       });
     });
 
-    it(`Disable form, clear errors, sign in, navigate to about, enable form`, async () => {
+    it(`Disable form, clear errors, sign-in, navigate to about, enable form`, async () => {
       presenter.onEmailChange(AuthenticatorSpy.CORRECT_EMAIL);
       presenter.onPasswordChange(AuthenticatorSpy.CORRECT_PASSWORD);
 

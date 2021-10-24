@@ -19,7 +19,7 @@ export default class ReactView extends React.Component {
     this.#presenter = props.makePresenter();
     this.controller = new Controller(this.#presenter, this);
     this.model = this.#presenter.viewModel;
-    ViewUpdater.bind(this.#presenter, this);
+    this.#presenter.viewModel = new ViewUpdater(this.#presenter, this);
   }
 
   componentDidMount() {

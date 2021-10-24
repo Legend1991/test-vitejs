@@ -1,4 +1,4 @@
-import { strictEqual } from 'assert';
+import { deepStrictEqual, strictEqual } from 'assert';
 import { beforeEach, describe, it } from 'mocha';
 import ViewSpy from './test-doubles/view-spy.js';
 import PresenterSpy from './test-doubles/presenter-spy.js';
@@ -8,42 +8,168 @@ describe('ViewUpdater', () => {
   let view;
 
   beforeEach(() => {
-    presenter = new PresenterSpy();
+    presenter = new PresenterSpy({});
     view = new ViewSpy(presenter);
   });
 
   it(`Check initial state`, () => {
-    strictEqual(presenter.value, PresenterSpy.STUB_VALUE);
-    strictEqual(presenter.invokeCount, 0);
-    strictEqual(view.mappedValue, null);
     strictEqual(view.updateCount, 0);
+    deepStrictEqual(presenter.viewModel, {});
   });
 
-  it(`Map presenter's data to view on initial render`, () => {
-    view.render();
+  describe('ViewModel includes primitive values only', () => {
+    const makeInitialViewModel = () => ({ a: 0 });
 
-    strictEqual(presenter.value, PresenterSpy.STUB_VALUE);
-    strictEqual(presenter.invokeCount, 0);
-    strictEqual(view.mappedValue, PresenterSpy.STUB_VALUE);
-    strictEqual(view.updateCount, 0);
+    beforeEach(() => {
+      presenter = new PresenterSpy(makeInitialViewModel());
+      view = new ViewSpy(presenter);
+    });
+
+    it(`Update view on value change`, () => {
+      presenter.viewModel.a = 1;
+
+      strictEqual(view.updateCount, 1);
+      strictEqual(presenter.viewModel.a, 1);
+    });
+
+    it(`Update view on new value assign`, () => {
+      presenter.viewModel.b = 2;
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, {
+        ...makeInitialViewModel(),
+        b: 2
+      });
+    });
   });
 
-  it(`Update view on a user input event`, async () => {
-    await view.fireUserInput(ViewSpy.STUB_EVENT);
+  describe('ViewModel includes complex nested object', () => {
+    const makeNestedObject = () => ({ b: 1, c: [2, { d: 3 }] });
 
-    strictEqual(presenter.value, ViewSpy.STUB_EVENT.target.value);
-    strictEqual(presenter.invokeCount, 1);
-    strictEqual(view.mappedValue, ViewSpy.STUB_EVENT.target.value);
-    strictEqual(view.updateCount, 1);
+    beforeEach(() => {
+      presenter = new PresenterSpy({a: makeNestedObject()});
+      view = new ViewSpy(presenter);
+    });
+
+    it(`Update view on primitive value change`, () => {
+      presenter.viewModel.a.b = 2;
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: {
+        ...makeNestedObject(),
+        b: 2
+      }});
+    });
+
+    it(`Update view on new primitive value assign`, () => {
+      presenter.viewModel.a.e = 4;
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: {
+        ...makeNestedObject(),
+        e: 4
+      }});
+    });
+
+    it(`Update view on direct change array's value`, () => {
+      presenter.viewModel.a.c[0] = 4;
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: {
+        b: 1, c: [4, { d: 3 }]
+      }});
+    });
+
+    it(`Update view on new value push to array`, () => {
+      presenter.viewModel.a.c.push(4);
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: {
+        b: 1, c: [2, { d: 3 }, 4]
+      }});
+    });
+
+    it(`Update view on object's value change inside array`, () => {
+      presenter.viewModel.a.c[1].d = 4;
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: {
+        b: 1, c: [2, { d: 4 }]
+      }});
+    });
+
+    it(`Update view twice on new object push to array and change it's value`, () => {
+      presenter.viewModel.a.c.push({ e: 4 });
+      presenter.viewModel.a.c[presenter.viewModel.a.c.length - 1].e = 5;
+
+      strictEqual(view.updateCount, 2);
+      deepStrictEqual(presenter.viewModel, { a: {
+        b: 1, c: [2, { d: 3 }, { e: 5 }]
+      }});
+    });
   });
 
-  it(`Update view few times on few user input events`, async () => {
-    await view.fireUserInput(ViewSpy.STUB_EVENT);
-    await view.fireUserInput(ViewSpy.ANOTHER_EVENT);
+  describe('ViewModel includes complex nested array', () => {
+    const makeNestedArray = () => ([1, { b: 2, c: [3] }]);
 
-    strictEqual(presenter.value, ViewSpy.ANOTHER_EVENT.target.value);
-    strictEqual(presenter.invokeCount, 2);
-    strictEqual(view.mappedValue, ViewSpy.ANOTHER_EVENT.target.value);
-    strictEqual(view.updateCount, 2);
+    beforeEach(() => {
+      presenter = new PresenterSpy({a: makeNestedArray()});
+      view = new ViewSpy(presenter);
+    });
+
+    it(`Update view on primitive value change`, () => {
+      presenter.viewModel.a[0] = 4;
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: [
+        4, { b: 2, c: [3] }
+      ]});
+    });
+
+    it(`Update view on new value push`, () => {
+      presenter.viewModel.a.push(4);
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: [
+        ...makeNestedArray(),
+        4
+      ]});
+    });
+
+    it(`Update view on object's value change`, () => {
+      presenter.viewModel.a[1].b = 4;
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: [
+        1, { b: 4, c: [3] }
+      ]});
+    });
+
+    it(`Update view on new object's value assign`, () => {
+      presenter.viewModel.a[1].d = 4;
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: [
+        1, { b: 2, c: [3], d: 4 }
+      ]});
+    });
+
+    it(`Update view on array's value change inside object`, () => {
+      presenter.viewModel.a[1].c[0] = 4;
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: [
+        1, { b: 2, c: [4] }
+      ]});
+    });
+
+    it(`Update view on new value push to array inside object`, () => {
+      presenter.viewModel.a[1].c.push(4);
+
+      strictEqual(view.updateCount, 1);
+      deepStrictEqual(presenter.viewModel, { a: [
+        1, { b: 2, c: [3, 4] }
+      ]});
+    });
   });
 });
