@@ -1,9 +1,15 @@
+import Authenticator from '../authenticator.js';
+
 export default class LoginPresenter {
-  static MIN_PASSWORD_LENGTH = 8;
   static BAD_SIGN_IN_MSG = 'Wrong email or password';
   static BAD_EMAIL_FORMAT_MSG = 'Email should be correct format';
-  static BAD_PASSWORD_LENGTH_MSG =
-    `Password should be ${LoginPresenter.MIN_PASSWORD_LENGTH} characters or longer`;
+  static BAD_PASSWORD_FORMAT_MSG = `Password should be 8 characters or longer`;
+  static AUTH_ERROR_MSG_MAP = {
+    [null]: '',
+    [Authenticator.EMAIL_FORMAT_ERROR]: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
+    [Authenticator.PASSWORD_FORMAT_ERROR]: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
+    [Authenticator.BAD_CREDENTIALS_ERROR]: LoginPresenter.BAD_SIGN_IN_MSG
+  };
 
   viewModel = {
     emailError: '',
@@ -25,7 +31,6 @@ export default class LoginPresenter {
 
   #authenticator = null;
   #navigator = null;
-  #emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 
   constructor(authenticator, navigator) {
     this.#authenticator = authenticator;
@@ -54,8 +59,8 @@ export default class LoginPresenter {
 
   async onSignInClick() {
     this.#signInFormDisabled = true;
-    this.#emailError = '';
-    this.#passwordError = '';
+    this.#emailError = null;
+    this.#passwordError = null;
 
     this.#emailTouched = true;
     this.#passwordTouched = true;
@@ -66,8 +71,8 @@ export default class LoginPresenter {
     if (this.#authenticator.isSignedIn) {
       this.#navigator.goToAbout();
     } else {
-      this.#emailError = LoginPresenter.BAD_SIGN_IN_MSG;
-      this.#passwordError = LoginPresenter.BAD_SIGN_IN_MSG;
+      this.#emailError = this.#authenticator.emailError;
+      this.#passwordError = this.#authenticator.passwordError;
     }
 
     this.#signInFormDisabled = false;
@@ -81,35 +86,30 @@ export default class LoginPresenter {
   }
 
   set #emailError(value) {
-    this.viewModel.emailError = value;
-    this.viewModel.isEmailInputStatePrimary = value === '';
-    this.viewModel.isEmailInputStateError = value !== '';
+    this.viewModel.emailError = LoginPresenter.AUTH_ERROR_MSG_MAP[value];
+    this.viewModel.isEmailInputStatePrimary = value === null;
+    this.viewModel.isEmailInputStateError = value !== null;
   }
 
   set #passwordError(value) {
-    this.viewModel.passwordError = value;
-    this.viewModel.isPasswordInputStatePrimary = value === '';
-    this.viewModel.isPasswordInputStateError = value !== '';
+    this.viewModel.passwordError = LoginPresenter.AUTH_ERROR_MSG_MAP[value];
+    this.viewModel.isPasswordInputStatePrimary = value === null;
+    this.viewModel.isPasswordInputStateError = value !== null;
   }
 
   #validateEmail() {
     if (!this.#emailTouched)
       return;
 
-    const isEmailValid = this.#emailRegex.test(this.#email);
-
-    this.#emailError = isEmailValid
-      ? '' : LoginPresenter.BAD_EMAIL_FORMAT_MSG;
+    this.#authenticator.validateEmail(this.#email);
+    this.#emailError = this.#authenticator.emailError;
   }
 
   #validatePassword() {
     if (!this.#passwordTouched)
       return;
 
-    const isPasswordValid =
-      this.#password.length >= LoginPresenter.MIN_PASSWORD_LENGTH;
-
-    this.#passwordError = isPasswordValid
-      ? '' : LoginPresenter.BAD_PASSWORD_LENGTH_MSG;
+    this.#authenticator.validatePassword(this.#password);
+    this.#passwordError = this.#authenticator.passwordError;
   }
 }

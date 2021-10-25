@@ -14,7 +14,7 @@ export default class Controller {
 
           const newFunc = new Proxy(value, {
             apply(original, thisArg, args) {
-              original.call(presenter, view.extractUserInput(args[0]));
+              original.call(presenter, view.extractUserInput(...args));
             }
           });
 

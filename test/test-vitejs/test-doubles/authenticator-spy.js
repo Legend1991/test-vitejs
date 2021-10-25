@@ -1,19 +1,16 @@
-export default class AuthenticatorSpy {
-  static WRONG_EMAIL = 'wrong.email@example.com';
-  static WRONG_PASSWORD = 'wrongpassword';
-  static CORRECT_EMAIL = 'correct.email@example.com';
-  static CORRECT_PASSWORD = 'correctpassword';
+import Authenticator from '../../../src/test-vitejs/authenticator.js';
+import AuthGatewaySpy from './auth-gateway-spy.js';
 
+export default class AuthenticatorSpy extends Authenticator {
   log = [];
-  isSignedIn = false;
+
+  constructor() {
+    super(new AuthGatewaySpy());
+  } 
 
   async signIn(email, password) {
-    queueMicrotask(() => {
-      const args = JSON.stringify([email, password]);
-      this.log.push(`[Authenticator # signIn] args: ${args}`);
-
-      this.isSignedIn = email === AuthenticatorSpy.CORRECT_EMAIL
-        && password === AuthenticatorSpy.CORRECT_PASSWORD;
-    });
+    await super.signIn(email, password);
+    const args = JSON.stringify([email, password]);
+    this.log.push(`[Authenticator # signIn] args: ${args}`);
   }
 }

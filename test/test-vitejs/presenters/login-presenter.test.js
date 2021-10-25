@@ -2,6 +2,7 @@ import { deepStrictEqual, strictEqual } from 'assert';
 import { beforeEach, describe, it } from 'mocha';
 import LoginPresenter from
   '../../../src/test-vitejs/presenters/login-presenter.js';
+import AuthGatewaySpy from '../test-doubles/auth-gateway-spy.js';
 import AuthenticatorSpy from '../test-doubles/authenticator-spy.js';
 import NavigatorSpy from '../test-doubles/navigator-spy.js';
 import ViewModelSpy from '../test-doubles/view-model-spy.js';
@@ -23,31 +24,29 @@ describe('LoginPresenter', () => {
   let authenticator;
   let navigator;
   let presenter;
-  let viewModel;
 
   beforeEach(() => {
     authenticator = new AuthenticatorSpy();
     navigator = new NavigatorSpy();
     presenter = new LoginPresenter(authenticator, navigator);
-    viewModel = presenter.viewModel;
   });
 
   it(`Check initial state`, () => {
-    deepStrictEqual(viewModel, initialViewModel);
+    deepStrictEqual(presenter.viewModel, initialViewModel);
   });
 
   describe('Email Input', () => {
     it(`Should not validate email until first focus out`, () => {
       presenter.onEmailChange('u');
 
-      deepStrictEqual(viewModel, initialViewModel);
+      deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it(`Invalidate empty email`, () => {
       presenter.onEmailChange('');
       presenter.onEmailFocusOut();
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
         isEmailInputStatePrimary: false,
@@ -59,7 +58,7 @@ describe('LoginPresenter', () => {
       presenter.onEmailChange('user@email');
       presenter.onEmailFocusOut();
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
         isEmailInputStatePrimary: false,
@@ -71,7 +70,7 @@ describe('LoginPresenter', () => {
       presenter.onEmailChange('user@email.com');
       presenter.onEmailFocusOut();
 
-      deepStrictEqual(viewModel, initialViewModel);
+      deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it(`Validate email after change from wrong to correct format`, () => {
@@ -81,7 +80,7 @@ describe('LoginPresenter', () => {
       presenter.onEmailChange(WRONG_FORMAT_EMAIL);
       presenter.onEmailFocusOut();
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
         isEmailInputStatePrimary: false,
@@ -90,7 +89,7 @@ describe('LoginPresenter', () => {
 
       presenter.onEmailChange(CORRECT_FORMAT_EMAIL);
 
-      deepStrictEqual(viewModel, initialViewModel);
+      deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it(`Validate email after sign-in click as it was focused out`, async () => {
@@ -98,7 +97,7 @@ describe('LoginPresenter', () => {
       await presenter.onSignInClick();
       presenter.onEmailChange('user@email.com');
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
         passwordError: LoginPresenter.BAD_SIGN_IN_MSG,
         isPasswordInputStatePrimary: false,
@@ -111,7 +110,7 @@ describe('LoginPresenter', () => {
       await presenter.onSignInClick();
       presenter.onEmailChange('us');
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
         isEmailInputStatePrimary: false,
@@ -127,16 +126,16 @@ describe('LoginPresenter', () => {
     it(`Should not validate password until first focus out`, () => {
       presenter.onPasswordChange('1');
 
-      deepStrictEqual(viewModel, initialViewModel);
+      deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it(`Invalidate empty password`, () => {
       presenter.onPasswordChange('');
       presenter.onPasswordFocusOut();
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
-        passwordError: LoginPresenter.BAD_PASSWORD_LENGTH_MSG,
+        passwordError: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
         isPasswordInputStatePrimary: false,
         isPasswordInputStateError: true
       });
@@ -146,9 +145,9 @@ describe('LoginPresenter', () => {
       presenter.onPasswordChange('1234567');
       presenter.onPasswordFocusOut();
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
-        passwordError: LoginPresenter.BAD_PASSWORD_LENGTH_MSG,
+        passwordError: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
         isPasswordInputStatePrimary: false,
         isPasswordInputStateError: true
       });
@@ -158,7 +157,7 @@ describe('LoginPresenter', () => {
       presenter.onPasswordChange('12345678');
       presenter.onPasswordFocusOut();
 
-      deepStrictEqual(viewModel, initialViewModel);
+      deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it(`Validate password change from wrong to correct length`, () => {
@@ -168,16 +167,16 @@ describe('LoginPresenter', () => {
       presenter.onPasswordChange(WRONG_LENGTH_PASSWORD);
       presenter.onPasswordFocusOut();
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
-        passwordError: LoginPresenter.BAD_PASSWORD_LENGTH_MSG,
+        passwordError: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
         isPasswordInputStatePrimary: false,
         isPasswordInputStateError: true
       });
 
       presenter.onPasswordChange(CORRECT_LENGTH_PASSWORD);
 
-      deepStrictEqual(viewModel, initialViewModel);
+      deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it(`Validate password after sign-in click as it was focused out`, async () => {
@@ -185,7 +184,7 @@ describe('LoginPresenter', () => {
       await presenter.onSignInClick();
       presenter.onPasswordChange('12345678');
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_SIGN_IN_MSG,
         isEmailInputStatePrimary: false,
@@ -198,12 +197,12 @@ describe('LoginPresenter', () => {
       await presenter.onSignInClick();
       presenter.onPasswordChange('12');
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_SIGN_IN_MSG,
         isEmailInputStatePrimary: false,
         isEmailInputStateError: true,
-        passwordError: LoginPresenter.BAD_PASSWORD_LENGTH_MSG,
+        passwordError: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
         isPasswordInputStatePrimary: false,
         isPasswordInputStateError: true
       });
@@ -246,16 +245,16 @@ describe('LoginPresenter', () => {
     });
 
     it(`Disable form, clear errors, try to sign-in, show errors, enable form`, async () => {
-      presenter.onEmailChange(AuthenticatorSpy.WRONG_EMAIL);
-      presenter.onPasswordChange(AuthenticatorSpy.WRONG_PASSWORD);
+      presenter.onEmailChange(AuthGatewaySpy.WRONG_EMAIL);
+      presenter.onPasswordChange(AuthGatewaySpy.WRONG_PASSWORD);
 
       log.length = 0;
 
       await presenter.onSignInClick();
 
       const signInArgs = JSON.stringify([
-        AuthenticatorSpy.WRONG_EMAIL,
-        AuthenticatorSpy.WRONG_PASSWORD
+        AuthGatewaySpy.WRONG_EMAIL,
+        AuthGatewaySpy.WRONG_PASSWORD
       ]);
 
       deepStrictEqual(log, [
@@ -272,7 +271,7 @@ describe('LoginPresenter', () => {
         ...viewModelEnableSignInFormLog
       ]);
 
-      deepStrictEqual(viewModel, {
+      deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_SIGN_IN_MSG,
         passwordError: LoginPresenter.BAD_SIGN_IN_MSG,
@@ -284,16 +283,16 @@ describe('LoginPresenter', () => {
     });
 
     it(`Disable form, clear errors, sign-in, navigate to about, enable form`, async () => {
-      presenter.onEmailChange(AuthenticatorSpy.CORRECT_EMAIL);
-      presenter.onPasswordChange(AuthenticatorSpy.CORRECT_PASSWORD);
+      presenter.onEmailChange(AuthGatewaySpy.CORRECT_EMAIL);
+      presenter.onPasswordChange(AuthGatewaySpy.CORRECT_PASSWORD);
 
       log.length = 0;
 
       await presenter.onSignInClick();
 
       const signInArgs = JSON.stringify([
-        AuthenticatorSpy.CORRECT_EMAIL,
-        AuthenticatorSpy.CORRECT_PASSWORD
+        AuthGatewaySpy.CORRECT_EMAIL,
+        AuthGatewaySpy.CORRECT_PASSWORD
       ]);
 
       deepStrictEqual(log, [
@@ -305,7 +304,7 @@ describe('LoginPresenter', () => {
         ...viewModelEnableSignInFormLog
       ]);
 
-      deepStrictEqual(viewModel, initialViewModel);
+      deepStrictEqual(presenter.viewModel, initialViewModel);
     });
   });
 });
