@@ -41,6 +41,13 @@ describe('ViewUpdater', () => {
         b: 2
       });
     });
+    
+    it(`Should not update view if value did not change`, () => {
+      presenter.viewModel.a = 0;
+
+      strictEqual(view.updateCount, 0);
+      strictEqual(presenter.viewModel.a, 0);
+    });
   });
 
   describe('ViewModel includes complex nested object', () => {
@@ -80,6 +87,13 @@ describe('ViewUpdater', () => {
       }});
     });
 
+    it(`Should not update view if array's value did not change`, () => {
+      presenter.viewModel.a.c[0] = 2;
+
+      strictEqual(view.updateCount, 0);
+      deepStrictEqual(presenter.viewModel, { a: makeNestedObject() });
+    });
+
     it(`Update view on new value push to array`, () => {
       presenter.viewModel.a.c.push(4);
 
@@ -96,6 +110,13 @@ describe('ViewUpdater', () => {
       deepStrictEqual(presenter.viewModel, { a: {
         b: 1, c: [2, { d: 4 }]
       }});
+    });
+
+    it(`Should not update view if object's value did not change inside array`, () => {
+      presenter.viewModel.a.c[1].d = 3;
+
+      strictEqual(view.updateCount, 0);
+      deepStrictEqual(presenter.viewModel, { a: makeNestedObject() });
     });
 
     it(`Update view twice on new object push to array and change it's value`, () => {
@@ -126,6 +147,13 @@ describe('ViewUpdater', () => {
       ]});
     });
 
+    it(`Should not update view if primitive value did not change`, () => {
+      presenter.viewModel.a[0] = 1;
+
+      strictEqual(view.updateCount, 0);
+      deepStrictEqual(presenter.viewModel, { a: makeNestedArray() });
+    });
+
     it(`Update view on new value push`, () => {
       presenter.viewModel.a.push(4);
 
@@ -145,6 +173,13 @@ describe('ViewUpdater', () => {
       ]});
     });
 
+    it(`Should not update view if object's value did not change`, () => {
+      presenter.viewModel.a[1].b = 2;
+
+      strictEqual(view.updateCount, 0);
+      deepStrictEqual(presenter.viewModel, { a: makeNestedArray() });
+    });
+
     it(`Update view on new object's value assign`, () => {
       presenter.viewModel.a[1].d = 4;
 
@@ -161,6 +196,13 @@ describe('ViewUpdater', () => {
       deepStrictEqual(presenter.viewModel, { a: [
         1, { b: 2, c: [4] }
       ]});
+    });
+
+    it(`Should not update view if array's value did not change inside object`, () => {
+      presenter.viewModel.a[1].c[0] = 3;
+
+      strictEqual(view.updateCount, 0);
+      deepStrictEqual(presenter.viewModel, { a: makeNestedArray() });
     });
 
     it(`Update view on new value push to array inside object`, () => {
