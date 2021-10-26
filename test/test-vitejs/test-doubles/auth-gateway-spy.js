@@ -14,6 +14,8 @@ export default class AuthGatewaySpy {
     this.email = email;
     this.password = password;
 
+    // await new Promise(r => setTimeout(r, 5000));
+
     const isSignedIn = email === AuthGatewaySpy.CORRECT_EMAIL
       && password === AuthGatewaySpy.CORRECT_PASSWORD;
 

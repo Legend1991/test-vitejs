@@ -1,14 +1,14 @@
-import Authenticator from '../authenticator.js';
+import Auth from '../authenticator.js';
 
 export default class LoginPresenter {
   static BAD_SIGN_IN_MSG = 'Wrong email or password';
   static BAD_EMAIL_FORMAT_MSG = 'Email should be correct format';
   static BAD_PASSWORD_FORMAT_MSG = `Password should be 8 characters or longer`;
-  static AUTH_ERROR_MSG_MAP = {
+  static ERROR_MSG_MAP = {
     [null]: '',
-    [Authenticator.EMAIL_FORMAT_ERROR]: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
-    [Authenticator.PASSWORD_FORMAT_ERROR]: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
-    [Authenticator.BAD_CREDENTIALS_ERROR]: LoginPresenter.BAD_SIGN_IN_MSG
+    [Auth.EMAIL_FORMAT_ERROR]: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
+    [Auth.PASSWORD_FORMAT_ERROR]: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
+    [Auth.BAD_CREDENTIALS_ERROR]: LoginPresenter.BAD_SIGN_IN_MSG
   };
 
   viewModel = {
@@ -66,7 +66,6 @@ export default class LoginPresenter {
     this.#passwordTouched = true;
 
     await this.#authenticator.signIn(this.#email, this.#password);
-    // await new Promise(r => setTimeout(r, 5000));
 
     if (this.#authenticator.isSignedIn) {
       this.#navigator.goToAbout();
@@ -86,13 +85,13 @@ export default class LoginPresenter {
   }
 
   set #emailError(value) {
-    this.viewModel.emailError = LoginPresenter.AUTH_ERROR_MSG_MAP[value];
+    this.viewModel.emailError = LoginPresenter.ERROR_MSG_MAP[value];
     this.viewModel.isEmailInputStatePrimary = value === null;
     this.viewModel.isEmailInputStateError = value !== null;
   }
 
   set #passwordError(value) {
-    this.viewModel.passwordError = LoginPresenter.AUTH_ERROR_MSG_MAP[value];
+    this.viewModel.passwordError = LoginPresenter.ERROR_MSG_MAP[value];
     this.viewModel.isPasswordInputStatePrimary = value === null;
     this.viewModel.isPasswordInputStateError = value !== null;
   }
