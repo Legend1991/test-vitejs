@@ -5,7 +5,8 @@ export default class AuthGatewaySpy {
   static WRONG_PASSWORD = 'wrongpassword';
   static CORRECT_EMAIL = 'correct.email@example.com';
   static CORRECT_PASSWORD = 'correctpassword';
-  static TOKEN_STUB = 'token_sample';
+  static ACCESS_TOKEN_STUB = 'access_token_stub';
+  static REFRESH_TOKEN_STUB = 'refresh_token_stub';
 
   email;
   password;
@@ -21,14 +22,19 @@ export default class AuthGatewaySpy {
 
     if (isSignedIn)
       return {
-        token: AuthGatewaySpy.TOKEN_STUB,
-        emailError: null,
-        passwordError: null
+        tokens: {
+          access: AuthGatewaySpy.ACCESS_TOKEN_STUB,
+          refresh: AuthGatewaySpy.REFRESH_TOKEN_STUB
+        },
+        errors: null
       };
 
     return {
-      emailError: Authenticator.BAD_CREDENTIALS_ERROR,
-      passwordError: Authenticator.BAD_CREDENTIALS_ERROR
+      tokens: null,
+      errors: {
+        email: Authenticator.BAD_CREDENTIALS_ERROR,
+        password: Authenticator.BAD_CREDENTIALS_ERROR
+      }
     };
   }
 }

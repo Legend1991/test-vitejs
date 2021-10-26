@@ -40,8 +40,11 @@ export default class Authenticator {
 
   async signIn(email, password) {
     const response = await this.#authGateway.signIn(email, password);
-    this.#emailError = response.emailError;
-    this.#passwordError = response.passwordError;
-    this.#isSignedIn = !!response.token;
+    if (response.errors) {
+      this.#emailError = response.errors.email;
+      this.#passwordError = response.errors.password;
+      return;
+    }
+    this.#isSignedIn = !!response.tokens;
   }
 }
