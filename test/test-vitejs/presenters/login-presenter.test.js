@@ -93,19 +93,16 @@ describe('LoginPresenter', () => {
     });
 
     it(`Validate email after sign-in click as it was focused out`, async () => {
+      presenter.onPasswordChange(AuthGatewaySpy.CORRECT_PASSWORD);
       presenter.onEmailChange('user@email');
       await presenter.onSignInClick();
       presenter.onEmailChange('user@email.com');
 
-      deepStrictEqual(presenter.viewModel, {
-        ...initialViewModel,
-        passwordError: LoginPresenter.BAD_SIGN_IN_MSG,
-        isPasswordInputStatePrimary: false,
-        isPasswordInputStateError: true
-      });
+      deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it(`Invalidate email after sign-in click as it was focused out`, async () => {
+      presenter.onPasswordChange(AuthGatewaySpy.CORRECT_PASSWORD);
       presenter.onEmailChange('u');
       await presenter.onSignInClick();
       presenter.onEmailChange('us');
@@ -114,10 +111,7 @@ describe('LoginPresenter', () => {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
         isEmailInputStatePrimary: false,
-        isEmailInputStateError: true,
-        passwordError: LoginPresenter.BAD_SIGN_IN_MSG,
-        isPasswordInputStatePrimary: false,
-        isPasswordInputStateError: true
+        isEmailInputStateError: true
       });
     });
   });
@@ -180,28 +174,22 @@ describe('LoginPresenter', () => {
     });
 
     it(`Validate password after sign-in click as it was focused out`, async () => {
+      presenter.onEmailChange(AuthGatewaySpy.CORRECT_EMAIL);
       presenter.onPasswordChange('1234567');
       await presenter.onSignInClick();
       presenter.onPasswordChange('12345678');
 
-      deepStrictEqual(presenter.viewModel, {
-        ...initialViewModel,
-        emailError: LoginPresenter.BAD_SIGN_IN_MSG,
-        isEmailInputStatePrimary: false,
-        isEmailInputStateError: true
-      });
+      deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it(`Invalidate password after sign-in click as it was focused out`, async () => {
+      presenter.onEmailChange(AuthGatewaySpy.CORRECT_EMAIL);
       presenter.onPasswordChange('1');
       await presenter.onSignInClick();
       presenter.onPasswordChange('12');
 
       deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
-        emailError: LoginPresenter.BAD_SIGN_IN_MSG,
-        isEmailInputStatePrimary: false,
-        isEmailInputStateError: true,
         passwordError: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
         isPasswordInputStatePrimary: false,
         isPasswordInputStateError: true

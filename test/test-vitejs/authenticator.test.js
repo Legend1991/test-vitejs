@@ -51,7 +51,33 @@ describe('Authenticator', () => {
     strictEqual(authenticator.passwordError, null);
   });
 
-  it(`Invalidate bad credentials on sign-in`, async () => {
+  it(`Invalidate bad password format on sign-in`, async () => {
+    await authenticator.signIn(AuthGatewaySpy.CORRECT_EMAIL, '1234567');
+
+    strictEqual(authenticator.isSignedIn, false);
+    strictEqual(authenticator.emailError, null);
+    strictEqual(authenticator.passwordError,
+      Authenticator.PASSWORD_FORMAT_ERROR);
+  });
+
+  it(`Invalidate bad email format on sign-in`, async () => {
+    await authenticator.signIn('user@email', AuthGatewaySpy.CORRECT_PASSWORD);
+
+    strictEqual(authenticator.isSignedIn, false);
+    strictEqual(authenticator.emailError, Authenticator.EMAIL_FORMAT_ERROR);
+    strictEqual(authenticator.passwordError, null);
+  });
+
+  it(`Invalidate bad credentials format on sign-in`, async () => {
+    await authenticator.signIn('user@email', '1234567');
+
+    strictEqual(authenticator.isSignedIn, false);
+    strictEqual(authenticator.emailError, Authenticator.EMAIL_FORMAT_ERROR);
+    strictEqual(authenticator.passwordError,
+      Authenticator.PASSWORD_FORMAT_ERROR);
+  });
+
+  it(`Reject sign-in with bad credentials`, async () => {
     await authenticator.signIn(
       AuthGatewaySpy.WRONG_EMAIL,
       AuthGatewaySpy.WRONG_PASSWORD
