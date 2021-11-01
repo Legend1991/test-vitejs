@@ -6,7 +6,6 @@ export default class Authenticator {
   static PASSWORD_FORMAT_ERROR = 'PASSWORD_FORMAT_ERROR';
   static BAD_CREDENTIALS_ERROR = 'BAD_CREDENTIALS_ERROR';
 
-  #isSignedIn = false;
   #emailError = null;
   #passwordError = null;
 
@@ -19,7 +18,7 @@ export default class Authenticator {
   }
 
   get isSignedIn() {
-    return this.#isSignedIn;
+    return Boolean(this.#tokenRepository.accessToken);
   }
 
   get emailError() {
@@ -54,8 +53,7 @@ export default class Authenticator {
       this.#passwordError = response.error.type;
       return;
     }
-
-    this.#isSignedIn = Boolean(response.result?.accessToken);
+    
     this.#tokenRepository.accessToken = response.result?.accessToken;
     this.#tokenRepository.expiresIn = response.result?.expiresIn;
     this.#tokenRepository.refreshToken = response.result?.refreshToken;

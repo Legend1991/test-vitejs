@@ -3,6 +3,10 @@ export default class TokenRepositorySpy {
   expiresInValue = null;
   refreshTokenValue = null;
 
+  get accessToken() {
+    return this.accessTokenValue;
+  }
+
   set accessToken(value) {
     this.accessTokenValue = value;
   }
