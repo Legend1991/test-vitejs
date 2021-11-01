@@ -49,9 +49,9 @@ export default class Authenticator {
 
     const response = await this.#authGateway.signIn(email, password);
 
-    if (response.errors) {
-      this.#emailError = response.errors?.email;
-      this.#passwordError = response.errors?.password;
+    if (response.error) {
+      this.#emailError = response.error.type;
+      this.#passwordError = response.error.type;
       return;
     }
 

@@ -31,9 +31,8 @@ export default class AuthGatewaySpy {
       };
 
     return {
-      errors: {
-        email: Authenticator.BAD_CREDENTIALS_ERROR,
-        password: Authenticator.BAD_CREDENTIALS_ERROR
+      error: {
+        type: Authenticator.BAD_CREDENTIALS_ERROR
       }
     };
   }
