@@ -2,9 +2,12 @@ version: "3.9"
 services:
   test-vitejs-dev:
     container_name: test-vitejs-dev
+    environment:
+      - NODE_ENV=development
     build:
       context: .
     ports:
       - "3000:3000"
     volumes:
       - ./src:/usr/src/app/src
+      - ./test:/usr/src/app/test

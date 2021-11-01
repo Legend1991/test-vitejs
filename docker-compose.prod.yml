@@ -2,6 +2,8 @@ version: "3.9"
 services:
   test-vitejs-prod:
     container_name: test-vitejs-prod
+    environment:
+      - NODE_ENV=production
     build:
       context: .
       dockerfile: Dockerfile.prod
