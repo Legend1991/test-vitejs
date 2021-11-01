@@ -7,6 +7,7 @@ export default class AuthGatewaySpy {
   static CORRECT_PASSWORD = 'correctpassword';
   static ACCESS_TOKEN_STUB = 'access_token_stub';
   static REFRESH_TOKEN_STUB = 'refresh_token_stub';
+  static EXPIRES_IN_STUB = 86400;
 
   email;
   password;
@@ -22,15 +23,14 @@ export default class AuthGatewaySpy {
 
     if (isSignedIn)
       return {
-        tokens: {
-          access: AuthGatewaySpy.ACCESS_TOKEN_STUB,
-          refresh: AuthGatewaySpy.REFRESH_TOKEN_STUB
-        },
-        errors: null
+        result: {
+          accessToken: AuthGatewaySpy.ACCESS_TOKEN_STUB,
+          expiresIn: AuthGatewaySpy.EXPIRES_IN_STUB,
+          refreshToken: AuthGatewaySpy.REFRESH_TOKEN_STUB,
+        }
       };
 
     return {
-      tokens: null,
       errors: {
         email: Authenticator.BAD_CREDENTIALS_ERROR,
         password: Authenticator.BAD_CREDENTIALS_ERROR

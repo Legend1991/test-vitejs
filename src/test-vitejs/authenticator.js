@@ -1,7 +1,7 @@
-export default class Authenticator {
-  static #EMAIL_REGEX = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-  static #PASSWORD_REGEX = /^.{8,100}$/;
+const EMAIL_REGEX = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+const PASSWORD_REGEX = /^.{8,100}$/;
 
+export default class Authenticator {
   static EMAIL_FORMAT_ERROR = 'EMAIL_FORMAT_ERROR';
   static PASSWORD_FORMAT_ERROR = 'PASSWORD_FORMAT_ERROR';
   static BAD_CREDENTIALS_ERROR = 'BAD_CREDENTIALS_ERROR';
@@ -11,9 +11,11 @@ export default class Authenticator {
   #passwordError = null;
 
   #authGateway;
+  #tokenRepository;
 
-  constructor(authGateway) {
+  constructor(authGateway, tokenRepository) {
     this.#authGateway = authGateway;
+    this.#tokenRepository = tokenRepository;
   }
 
   get isSignedIn() {
@@ -29,12 +31,12 @@ export default class Authenticator {
   }
 
   validateEmail(value) {
-    this.#emailError = Authenticator.#EMAIL_REGEX.test(value)
+    this.#emailError = EMAIL_REGEX.test(value)
       ? null : Authenticator.EMAIL_FORMAT_ERROR;
   }
 
   validatePassword(value) {
-    this.#passwordError = Authenticator.#PASSWORD_REGEX.test(value)
+    this.#passwordError = PASSWORD_REGEX.test(value)
       ? null : Authenticator.PASSWORD_FORMAT_ERROR;
   }
 
@@ -46,11 +48,16 @@ export default class Authenticator {
       return;
 
     const response = await this.#authGateway.signIn(email, password);
+
     if (response.errors) {
-      this.#emailError = response.errors.email;
-      this.#passwordError = response.errors.password;
+      this.#emailError = response.errors?.email;
+      this.#passwordError = response.errors?.password;
       return;
     }
-    this.#isSignedIn = !!response.tokens;
+
+    this.#isSignedIn = Boolean(response.result?.accessToken);
+    this.#tokenRepository.accessToken = response.result?.accessToken;
+    this.#tokenRepository.expiresIn = response.result?.expiresIn;
+    this.#tokenRepository.refreshToken = response.result?.refreshToken;
   }
 }

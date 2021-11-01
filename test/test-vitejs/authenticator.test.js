@@ -2,14 +2,17 @@ import { deepStrictEqual, strictEqual } from 'assert';
 import { beforeEach, describe, it } from 'mocha';
 import Authenticator from '../../src/test-vitejs/authenticator.js';
 import AuthGatewaySpy from './test-doubles/auth-gateway-spy.js';
+import TokenRepositorySpy from "./test-doubles/token-repository-spy.js";
 
 describe('Authenticator', () => {
   let authGatewaySpy;
+  let tokenRepositorySpy;
   let authenticator;
 
   beforeEach(() => {
     authGatewaySpy = new AuthGatewaySpy();
-    authenticator = new Authenticator(authGatewaySpy);
+    tokenRepositorySpy = new TokenRepositorySpy();
+    authenticator = new Authenticator(authGatewaySpy, tokenRepositorySpy);
   });
 
   it(`Check initial state`, () => {
@@ -89,6 +92,9 @@ describe('Authenticator', () => {
       Authenticator.BAD_CREDENTIALS_ERROR);
     strictEqual(authGatewaySpy.email, AuthGatewaySpy.WRONG_EMAIL);
     strictEqual(authGatewaySpy.password, AuthGatewaySpy.WRONG_PASSWORD);
+    strictEqual(tokenRepositorySpy.accessTokenValue, null);
+    strictEqual(tokenRepositorySpy.expiresInValue, null);
+    strictEqual(tokenRepositorySpy.refreshTokenValue, null);
   });
 
   it(`Sign-in with good credentials`, async () => {
@@ -102,5 +108,11 @@ describe('Authenticator', () => {
     strictEqual(authenticator.passwordError, null);
     strictEqual(authGatewaySpy.email, AuthGatewaySpy.CORRECT_EMAIL);
     strictEqual(authGatewaySpy.password, AuthGatewaySpy.CORRECT_PASSWORD);
+    strictEqual(tokenRepositorySpy.accessTokenValue,
+      AuthGatewaySpy.ACCESS_TOKEN_STUB);
+    strictEqual(tokenRepositorySpy.expiresInValue,
+        AuthGatewaySpy.EXPIRES_IN_STUB);
+    strictEqual(tokenRepositorySpy.refreshTokenValue,
+        AuthGatewaySpy.REFRESH_TOKEN_STUB);
   });
 });
