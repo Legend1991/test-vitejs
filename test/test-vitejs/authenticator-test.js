@@ -1,8 +1,8 @@
-import { deepStrictEqual, strictEqual } from 'assert';
-import { beforeEach, describe, it } from 'mocha';
+import {strictEqual} from 'assert';
+import {beforeEach, describe, it} from 'mocha';
 import Authenticator from '../../src/test-vitejs/authenticator.js';
 import AuthGatewaySpy from './test-doubles/auth-gateway-spy.js';
-import TokenRepositorySpy from "./test-doubles/token-repository-spy.js";
+import TokenRepositorySpy from './test-doubles/token-repository-spy.js';
 
 describe('Authenticator', () => {
   let authGatewaySpy;
@@ -42,8 +42,8 @@ describe('Authenticator', () => {
 
     strictEqual(authenticator.isSignedIn, false);
     strictEqual(authenticator.emailError, null);
-    strictEqual(authenticator.passwordError, 
-      Authenticator.PASSWORD_FORMAT_ERROR);
+    strictEqual(authenticator.passwordError,
+        Authenticator.PASSWORD_FORMAT_ERROR);
   });
 
   it(`Validate correct password format`, () => {
@@ -60,7 +60,7 @@ describe('Authenticator', () => {
     strictEqual(authenticator.isSignedIn, false);
     strictEqual(authenticator.emailError, null);
     strictEqual(authenticator.passwordError,
-      Authenticator.PASSWORD_FORMAT_ERROR);
+        Authenticator.PASSWORD_FORMAT_ERROR);
   });
 
   it(`Invalidate bad email format on sign-in`, async () => {
@@ -77,19 +77,19 @@ describe('Authenticator', () => {
     strictEqual(authenticator.isSignedIn, false);
     strictEqual(authenticator.emailError, Authenticator.EMAIL_FORMAT_ERROR);
     strictEqual(authenticator.passwordError,
-      Authenticator.PASSWORD_FORMAT_ERROR);
+        Authenticator.PASSWORD_FORMAT_ERROR);
   });
 
   it(`Reject sign-in with bad credentials`, async () => {
     await authenticator.signIn(
-      AuthGatewaySpy.WRONG_EMAIL,
-      AuthGatewaySpy.WRONG_PASSWORD
+        AuthGatewaySpy.WRONG_EMAIL,
+        AuthGatewaySpy.WRONG_PASSWORD,
     );
 
     strictEqual(authenticator.isSignedIn, false);
     strictEqual(authenticator.emailError, Authenticator.BAD_CREDENTIALS_ERROR);
-    strictEqual(authenticator.passwordError, 
-      Authenticator.BAD_CREDENTIALS_ERROR);
+    strictEqual(authenticator.passwordError,
+        Authenticator.BAD_CREDENTIALS_ERROR);
     strictEqual(authGatewaySpy.email, AuthGatewaySpy.WRONG_EMAIL);
     strictEqual(authGatewaySpy.password, AuthGatewaySpy.WRONG_PASSWORD);
     strictEqual(tokenRepositorySpy.accessTokenValue, null);
@@ -99,8 +99,8 @@ describe('Authenticator', () => {
 
   it(`Sign-in with good credentials`, async () => {
     await authenticator.signIn(
-      AuthGatewaySpy.CORRECT_EMAIL,
-      AuthGatewaySpy.CORRECT_PASSWORD
+        AuthGatewaySpy.CORRECT_EMAIL,
+        AuthGatewaySpy.CORRECT_PASSWORD,
     );
 
     strictEqual(authenticator.isSignedIn, true);
@@ -109,7 +109,7 @@ describe('Authenticator', () => {
     strictEqual(authGatewaySpy.email, AuthGatewaySpy.CORRECT_EMAIL);
     strictEqual(authGatewaySpy.password, AuthGatewaySpy.CORRECT_PASSWORD);
     strictEqual(tokenRepositorySpy.accessTokenValue,
-      AuthGatewaySpy.ACCESS_TOKEN_STUB);
+        AuthGatewaySpy.ACCESS_TOKEN_STUB);
     strictEqual(tokenRepositorySpy.expiresInValue,
         AuthGatewaySpy.EXPIRES_IN_STUB);
     strictEqual(tokenRepositorySpy.refreshTokenValue,

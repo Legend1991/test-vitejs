@@ -1,7 +1,7 @@
-import { deepStrictEqual, strictEqual } from 'assert';
-import { beforeEach, describe, it } from 'mocha';
+import {deepStrictEqual} from 'assert';
+import {beforeEach, describe, it} from 'mocha';
 import LoginPresenter from
-  '../../../src/test-vitejs/presenters/login-presenter.js';
+      '../../../src/test-vitejs/presenters/login-presenter.js';
 import AuthGatewaySpy from '../test-doubles/auth-gateway-spy.js';
 import AuthenticatorSpy from '../test-doubles/authenticator-spy.js';
 import NavigatorSpy from '../test-doubles/navigator-spy.js';
@@ -18,7 +18,7 @@ describe('LoginPresenter', () => {
     signInButtonLoading: false,
     emailInputDisabled: false,
     passwordInputDisabled: false,
-    createAccountLinkDisabled: false
+    createAccountLinkDisabled: false,
   };
 
   let authenticator;
@@ -50,7 +50,7 @@ describe('LoginPresenter', () => {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
         isEmailInputStatePrimary: false,
-        isEmailInputStateError: true
+        isEmailInputStateError: true,
       });
     });
 
@@ -62,7 +62,7 @@ describe('LoginPresenter', () => {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
         isEmailInputStatePrimary: false,
-        isEmailInputStateError: true
+        isEmailInputStateError: true,
       });
     });
 
@@ -84,7 +84,7 @@ describe('LoginPresenter', () => {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
         isEmailInputStatePrimary: false,
-        isEmailInputStateError: true
+        isEmailInputStateError: true,
       });
 
       presenter.onEmailChange(CORRECT_FORMAT_EMAIL);
@@ -101,7 +101,8 @@ describe('LoginPresenter', () => {
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
-    it(`Invalidate email after sign-in click as it was focused out`, async () => {
+    it(`Invalidate email after sign-in click ` +
+        `as it was focused out`, async () => {
       presenter.onPasswordChange(AuthGatewaySpy.CORRECT_PASSWORD);
       presenter.onEmailChange('u');
       await presenter.onSignInClick();
@@ -111,7 +112,7 @@ describe('LoginPresenter', () => {
         ...initialViewModel,
         emailError: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
         isEmailInputStatePrimary: false,
-        isEmailInputStateError: true
+        isEmailInputStateError: true,
       });
     });
   });
@@ -131,7 +132,7 @@ describe('LoginPresenter', () => {
         ...initialViewModel,
         passwordError: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
         isPasswordInputStatePrimary: false,
-        isPasswordInputStateError: true
+        isPasswordInputStateError: true,
       });
     });
 
@@ -143,7 +144,7 @@ describe('LoginPresenter', () => {
         ...initialViewModel,
         passwordError: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
         isPasswordInputStatePrimary: false,
-        isPasswordInputStateError: true
+        isPasswordInputStateError: true,
       });
     });
 
@@ -165,7 +166,7 @@ describe('LoginPresenter', () => {
         ...initialViewModel,
         passwordError: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
         isPasswordInputStatePrimary: false,
-        isPasswordInputStateError: true
+        isPasswordInputStateError: true,
       });
 
       presenter.onPasswordChange(CORRECT_LENGTH_PASSWORD);
@@ -173,7 +174,8 @@ describe('LoginPresenter', () => {
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
-    it(`Validate password after sign-in click as it was focused out`, async () => {
+    it(`Validate password after sign-in click ` +
+        `as it was focused out`, async () => {
       presenter.onEmailChange(AuthGatewaySpy.CORRECT_EMAIL);
       presenter.onPasswordChange('1234567');
       await presenter.onSignInClick();
@@ -182,7 +184,8 @@ describe('LoginPresenter', () => {
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
-    it(`Invalidate password after sign-in click as it was focused out`, async () => {
+    it(`Invalidate password after sign-in click ` +
+        `as it was focused out`, async () => {
       presenter.onEmailChange(AuthGatewaySpy.CORRECT_EMAIL);
       presenter.onPasswordChange('1');
       await presenter.onSignInClick();
@@ -192,7 +195,7 @@ describe('LoginPresenter', () => {
         ...initialViewModel,
         passwordError: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
         isPasswordInputStatePrimary: false,
-        isPasswordInputStateError: true
+        isPasswordInputStateError: true,
       });
     });
   });
@@ -202,12 +205,12 @@ describe('LoginPresenter', () => {
       '[ViewModel # emailInputDisabled] set: true',
       '[ViewModel # passwordInputDisabled] set: true',
       '[ViewModel # signInButtonLoading] set: true',
-      '[ViewModel # createAccountLinkDisabled] set: true'
+      '[ViewModel # createAccountLinkDisabled] set: true',
     ];
     const viewModelClearEmailErrorLog = [
       '[ViewModel # emailError] set: ""',
       '[ViewModel # isEmailInputStatePrimary] set: true',
-      '[ViewModel # isEmailInputStateError] set: false'
+      '[ViewModel # isEmailInputStateError] set: false',
     ];
     const viewModelClearPasswordErrorLog = [
       '[ViewModel # passwordError] set: ""',
@@ -218,7 +221,7 @@ describe('LoginPresenter', () => {
       '[ViewModel # emailInputDisabled] set: false',
       '[ViewModel # passwordInputDisabled] set: false',
       '[ViewModel # signInButtonLoading] set: false',
-      '[ViewModel # createAccountLinkDisabled] set: false'
+      '[ViewModel # createAccountLinkDisabled] set: false',
     ];
 
     let log;
@@ -232,7 +235,8 @@ describe('LoginPresenter', () => {
       navigator.log = log;
     });
 
-    it(`Disable form, clear errors, try to sign-in, show errors, enable form`, async () => {
+    it(`Disable form, clear errors, try to sign-in, ` +
+        `show errors, enable form`, async () => {
       presenter.onEmailChange(AuthGatewaySpy.WRONG_EMAIL);
       presenter.onPasswordChange(AuthGatewaySpy.WRONG_PASSWORD);
 
@@ -242,7 +246,7 @@ describe('LoginPresenter', () => {
 
       const signInArgs = JSON.stringify([
         AuthGatewaySpy.WRONG_EMAIL,
-        AuthGatewaySpy.WRONG_PASSWORD
+        AuthGatewaySpy.WRONG_PASSWORD,
       ]);
 
       deepStrictEqual(log, [
@@ -256,7 +260,7 @@ describe('LoginPresenter', () => {
         '[ViewModel # passwordError] set: "Wrong email or password"',
         '[ViewModel # isPasswordInputStatePrimary] set: false',
         '[ViewModel # isPasswordInputStateError] set: true',
-        ...viewModelEnableSignInFormLog
+        ...viewModelEnableSignInFormLog,
       ]);
 
       deepStrictEqual(presenter.viewModel, {
@@ -266,11 +270,12 @@ describe('LoginPresenter', () => {
         isEmailInputStatePrimary: false,
         isEmailInputStateError: true,
         isPasswordInputStatePrimary: false,
-        isPasswordInputStateError: true
+        isPasswordInputStateError: true,
       });
     });
 
-    it(`Disable form, clear errors, sign-in, navigate to about, enable form`, async () => {
+    it(`Disable form, clear errors, sign-in, ` +
+        `navigate to about, enable form`, async () => {
       presenter.onEmailChange(AuthGatewaySpy.CORRECT_EMAIL);
       presenter.onPasswordChange(AuthGatewaySpy.CORRECT_PASSWORD);
 
@@ -280,7 +285,7 @@ describe('LoginPresenter', () => {
 
       const signInArgs = JSON.stringify([
         AuthGatewaySpy.CORRECT_EMAIL,
-        AuthGatewaySpy.CORRECT_PASSWORD
+        AuthGatewaySpy.CORRECT_PASSWORD,
       ]);
 
       deepStrictEqual(log, [
@@ -289,7 +294,7 @@ describe('LoginPresenter', () => {
         ...viewModelClearPasswordErrorLog,
         `[Authenticator # signIn] args: ${signInArgs}`,
         '[Navigator # goToAbout] args: []',
-        ...viewModelEnableSignInFormLog
+        ...viewModelEnableSignInFormLog,
       ]);
 
       deepStrictEqual(presenter.viewModel, initialViewModel);

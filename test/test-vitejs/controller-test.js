@@ -45,13 +45,13 @@ describe('Controller', () => {
     strictEqual(typeof controller.f, 'function');
   });
 
-  it(`Process the arguments with the view's extractUserInput method before passing them to the presenter`,
-      () => {
-        const args = ['arg0', 'arg1', 'arg2'];
+  it(`Process the arguments with the view's extractUserInput method ` +
+      `before passing them to the presenter`, () => {
+    const args = ['arg0', 'arg1', 'arg2'];
 
-        controller.f(...args);
+    controller.f(...args);
 
-        deepStrictEqual(view.invokedArgs, args);
-        strictEqual(presenter.invokedArg, args[0]);
-      });
+    deepStrictEqual(view.invokedArgs, args);
+    strictEqual(presenter.invokedArg, args[0]);
+  });
 });
