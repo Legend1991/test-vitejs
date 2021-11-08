@@ -1,7 +1,7 @@
 import {deepStrictEqual} from 'assert';
 import {beforeEach, describe, it} from 'mocha';
-import LoginPresenter from
-      '../../../src/test-vitejs/presenters/login-presenter.js';
+import LoginPresenter
+  from '../../../src/test-vitejs/presenters/login-presenter.js';
 import AuthGatewaySpy from '../test-doubles/auth-gateway-spy.js';
 import AuthenticatorSpy from '../test-doubles/authenticator-spy.js';
 import NavigatorSpy from '../test-doubles/navigator-spy.js';
