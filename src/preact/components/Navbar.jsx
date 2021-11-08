@@ -10,7 +10,7 @@ export default function Navbar() {
       </div>
       <div className="flex-1 px-2 mx-2">
         <div className="items-stretch hidden lg:flex">
-          <Link className="btn btn-ghost btn-sm rounded-btn" to="/">
+          <Link className="btn btn-ghost btn-sm rounded-btn" to="/login">
             Home
           </Link>
           <Link className="btn btn-ghost btn-sm rounded-btn" to="/about">

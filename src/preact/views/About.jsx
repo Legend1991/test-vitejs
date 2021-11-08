@@ -1,7 +1,4 @@
-import {history} from "../navigator";
-
-export default function About(props) {
-  console.log('[About] history:', history);
+export default function About() {
   return (
     <span className="text-lg font-bold">
       About

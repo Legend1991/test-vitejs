@@ -2,7 +2,7 @@ export const AUTHENTICATION_PATHS = ['/login', '/register'];
 export const PROTECTED_PATHS = ['/', '/about'];
 
 export const DEFAULT_AUTHENTICATION_PATH = '/login';
-export const DEFAULT_PUBLIC_PATH = '/';
+export const DEFAULT_PUBLIC_PATH = '/about';
 
 export default class RouteAuthorizer {
   #tokenRepository;
