@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import {Router, Route} from 'react-router-dom';
 
 import {history} from './react-router/navigator';
-import RouteAuthorizerSwitch from './react-router/route-authorizer-switch';
+import RouteAuthorizerSwitch from './react-router/RouteAuthorizerSwitch';
 import './index.css';
 import About from './preact/views/About';
 import LoginView from './preact/views/LoginView';
