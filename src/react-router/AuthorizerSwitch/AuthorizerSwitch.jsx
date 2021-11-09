@@ -3,7 +3,7 @@ import {Redirect, Switch, useLocation} from 'react-router-dom';
 
 import Presenter from './presenter.js';
 
-const RouteAuthorizerSwitch = ({children, routeAuthorizer}) => {
+const AuthorizerSwitch = ({children, routeAuthorizer}) => {
   const location = useLocation();
   const presenter = useMemo(() => new Presenter(routeAuthorizer), []);
   const {shouldRedirect, newLocation} = presenter.route(location);
@@ -16,4 +16,4 @@ const RouteAuthorizerSwitch = ({children, routeAuthorizer}) => {
   );
 };
 
-export default RouteAuthorizerSwitch;
+export default AuthorizerSwitch;

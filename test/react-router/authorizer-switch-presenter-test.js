@@ -1,18 +1,23 @@
 import {deepStrictEqual, strictEqual} from 'assert';
 import {describe, it} from 'mocha';
 import Presenter
-  from '../../../src/react-router/RouteAuthorizerSwitch/presenter.js';
+  from '../../src/react-router/AuthorizerSwitch/presenter.js';
 
-describe('RouteAuthorizerSwitchPresenter', () => {
+describe('AuthorizerSwitchPresenter', () => {
   it(`Redirect to new location when a user is not authorized`, () => {
     const location = {pathname: '/about'};
-    const newLocation = {pathname: '/login', state: {from: location}};
-    const presenter = new Presenter({route: () => newLocation.pathname});
+    const newPathname = '/login';
+    const presenter = new Presenter({route: () => newPathname});
 
-    const route = presenter.route(location);
+    const {shouldRedirect, newLocation} = presenter.route(location);
 
-    strictEqual(route.shouldRedirect, true);
-    deepStrictEqual(route.newLocation, newLocation);
+    strictEqual(shouldRedirect, true);
+    deepStrictEqual(newLocation, {
+      pathname: newPathname,
+      state: {
+        from: location,
+      },
+    });
   });
 
   it(`Keep going to current location when a user is authorized`, () => {
@@ -22,6 +27,6 @@ describe('RouteAuthorizerSwitchPresenter', () => {
     const {shouldRedirect, newLocation} = presenter.route(location);
 
     strictEqual(shouldRedirect, false);
-    deepStrictEqual(newLocation, undefined);
+    strictEqual(newLocation, undefined);
   });
 });
