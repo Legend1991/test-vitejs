@@ -34,13 +34,13 @@ export default class LoginView extends ReactView {
       <div className="container mx-auto p-4 space-y-6">
         <div className="flex items-center flex-col">
           <div className="w-80 space-y-6">
-            {/*<div*/}
-            {/*  className="card shadow-md lg:card-side bg-primary text-primary-content"*/}
-            {/*>*/}
-            {/*  <div className="card-body p-3 h-24">*/}
-            {/*    <Logo className="object-center"/>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
+            <div
+              className="card shadow-md lg:card-side bg-primary text-primary-content"
+            >
+              <div className="card-body p-3 h-24">
+                <Logo className="object-center"/>
+              </div>
+            </div>
             <div>
               <div className="form-control">
                 <label className="label">

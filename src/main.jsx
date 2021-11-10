@@ -5,8 +5,9 @@ import {history} from './react-router/navigator';
 import AuthorizerSwitch from './react-router/AuthorizerSwitch';
 import './index.css';
 import About from './preact/views/About';
+import UsersView from './preact/views/UsersView';
 import LoginView from './preact/views/LoginView';
-import Navbar from './preact/components/Navbar';
+import MainLayout from './preact/layouts/MainLayout';
 import makeLoginPresenter from './factories/make-login-presenter';
 import makeRouteAuthorizer from './factories/make-route-authorizer';
 
@@ -16,10 +17,12 @@ const Login = () => <LoginView makePresenter={makeLoginPresenter}/>;
 
 ReactDOM.render(
     <Router history={history}>
-      <Navbar/>
       <AuthorizerSwitch routeAuthorizer={routeAuthorizer}>
         <Route path="/login" component={Login}/>
-        <Route path="/about" component={About}/>
+        <MainLayout>
+          <Route path="/about" component={About}/>
+          <Route path="/users" component={UsersView}/>
+        </MainLayout>
       </AuthorizerSwitch>
     </Router>,
     document.getElementById('app'),
