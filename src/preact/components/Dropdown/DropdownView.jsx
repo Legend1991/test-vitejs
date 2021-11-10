@@ -1,8 +1,8 @@
-import CheckmarkIcon from '../CheckmarkIcon';
+import {CheckIcon} from '@heroicons/react/solid';
 
-const SELECTION_MARK_CLASSES = 'w-3 h-3 mr-2 mt-1.5';
+const SELECTION_MARK_CLASSES = 'w-5 h-5 mr-2 mt-0.5';
 const SELECTED_COMPONENT_MAP = {
-  [true]: <CheckmarkIcon className={SELECTION_MARK_CLASSES}/>,
+  [true]: <CheckIcon className={SELECTION_MARK_CLASSES}/>,
   [false]: <div className={SELECTION_MARK_CLASSES}/>,
 };
 

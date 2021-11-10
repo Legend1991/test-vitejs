@@ -27,24 +27,24 @@ export default function UsersView() {
                   {
                     value: 'Viewer',
                     name: 'Viewer',
-                    description: 'Can view content only. No editing. asdf asdf asd asdf',
+                    description: 'View content only. No editing. asdf asdf asd asdf',
                   },
                   {
                     value: 'Manager',
                     name: 'Manager',
-                    description: 'Can add users. Editing.',
+                    description: 'Add users. Editing.',
                   },
                   {
                     value: 'Developer',
                     name: 'Developer',
-                    description: 'Can edit stuff. No adding users.',
+                    description: 'Edit stuff. No adding users.',
                   },
                 ]}
                 value={value}
             />
           </td>
           <td>
-            <button className="btn btn-ghost btn-xs">remove</button>
+            <button className="btn btn-ghost btn-xs loading">remove</button>
           </td>
         </tr>
         <tr>
