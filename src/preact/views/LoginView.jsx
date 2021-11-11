@@ -2,12 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {Logo} from '../components/Logo'
-import ReactView from "./ReactView";
 import {Link} from "react-router-dom";
+import usePresenter from '../usePresenter';
 
-export default class LoginView extends ReactView {
-  render() {
-    const { controller, model } = this;
+export default function LoginView(props) {
+  const { controller, model } = usePresenter(props);
 
     console.log('[LoginView # render] model:', model, ' count:', this.state.count);
 
@@ -96,5 +95,4 @@ export default class LoginView extends ReactView {
         </div>
       </div>
     );
-  }
 }
