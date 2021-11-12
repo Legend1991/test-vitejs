@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import Dropdown from '../components/Dropdown';
-import {UserAddIcon } from '@heroicons/react/outline';
+import InviteInput from '../components/InviteInput';
 
 export default function UsersView() {
   const [value, setValue] = useState('Viewer');
@@ -8,19 +8,10 @@ export default function UsersView() {
   return (
       <div className="container mx-auto px-4 space-y-6">
         <div className="min-w-min w-9/12 mx-auto">
-        <div className="form-control min-w-min w-5/12 mr-auto">
-          <label className="label">
-            <span className="label-text">Invite collaborators by email</span>
-          </label>
-          <div className="relative">
-            <input type="text" placeholder="Please enter an email of a person you want to invite"
-                   className="w-full pr-16 input input-primary input-bordered" />
-              <button
-                  className="absolute top-0 right-0 rounded-l-none btn btn-primary">
-                <UserAddIcon className="w-5 h-5" />
-              </button>
-          </div>
-        </div>
+        <InviteInput
+            className="min-w-min w-5/12 mr-auto"
+            onInvite={(value) => console.log('[UsersView.onInvite] value:', value)}
+        />
       </div>
         <table className="table min-w-min w-9/12 mx-auto table-fixed">
         <thead>
