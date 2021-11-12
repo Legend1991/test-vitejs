@@ -4,8 +4,7 @@ export default class Controller {
   #onInvite;
 
   constructor({onInvite}) {
-    const dummyFunction = () => {};
-    this.#onInvite = onInvite || dummyFunction;
+    this.#onInvite = onInvite;
   }
 
   onInputKeyUp = ({key, target}) => {
@@ -18,7 +17,7 @@ export default class Controller {
   }
 
   #invite(inputEl) {
-    this.#onInvite(inputEl.value);
+    this.#onInvite?.(inputEl.value);
     inputEl.value = '';
   }
 }
