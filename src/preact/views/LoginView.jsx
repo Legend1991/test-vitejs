@@ -34,7 +34,10 @@ export default function LoginView(props) {
       <div className="flex items-center flex-col">
         <div className="w-80 space-y-6">
           <div
-            className="card shadow-md lg:card-side bg-primary text-primary-content"
+            className={
+              'card shadow-md lg:card-side '
+              + 'bg-primary text-primary-content'
+            }
           >
             <div className="card-body p-3 h-24">
               <Logo className="object-center" />
@@ -56,7 +59,7 @@ export default function LoginView(props) {
               <label className="label">
                 <span className="label-text-alt">
                   {model.emailError}
-&nbsp;
+                  &nbsp;
                 </span>
               </label>
             </div>
@@ -75,13 +78,14 @@ export default function LoginView(props) {
               <label className="label">
                 <span className="label-text-alt">
                   {model.passwordError}
-&nbsp;
+                  &nbsp;
                 </span>
               </label>
             </div>
           </div>
           <div className="form-control">
             <button
+              type="button"
               className={signInButtonClass}
               onClick={controller.onSignInClick}
             >
