@@ -1,8 +1,8 @@
-import {useMemo} from 'react';
+import React, { useMemo } from 'react';
 import InviteInputView from './InviteInputView';
 import Controller from './controller';
 
-export default function InviteInput(props) {
-  const controller = useMemo(() => new Controller(props), []);
-  return <InviteInputView {...props} controller={controller}/>;
+export default function InviteInput({ className, ...restProps }) {
+  const controller = useMemo(() => new Controller(restProps), []);
+  return <InviteInputView className={className} controller={controller} />;
 }

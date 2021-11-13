@@ -1,5 +1,5 @@
-import {deepStrictEqual, strictEqual} from 'assert';
-import {beforeEach, describe, it} from 'mocha';
+import { deepStrictEqual, strictEqual } from 'assert';
+import { beforeEach, describe, it } from 'mocha';
 import Controller from '../../src/test-vitejs/controller.js';
 
 describe('Controller', () => {
@@ -9,7 +9,11 @@ describe('Controller', () => {
 
   beforeEach(() => {
     presenter = {
-      a: 1, b: {}, c: [], d: true, e: null,
+      a: 1,
+      b: {},
+      c: [],
+      d: true,
+      e: null,
       invokedArg: null,
       f(a) {
         this.invokedArg = a;
@@ -25,7 +29,7 @@ describe('Controller', () => {
     controller = new Controller(presenter, view);
   });
 
-  it(`Only provide access to presenter methods`, () => {
+  it('Only provide access to presenter methods', () => {
     strictEqual(view.invokedArgs, null);
 
     strictEqual(presenter.a, 1);
@@ -45,8 +49,8 @@ describe('Controller', () => {
     strictEqual(typeof controller.f, 'function');
   });
 
-  it(`Process the arguments with the view's extractUserInput method ` +
-      `before passing them to the presenter`, () => {
+  it('Process the arguments with the view\'s extractUserInput method '
+      + 'before passing them to the presenter', () => {
     const args = ['arg0', 'arg1', 'arg2'];
 
     controller.f(...args);

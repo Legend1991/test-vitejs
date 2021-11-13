@@ -12,11 +12,11 @@ export default class RouteAuthorizer {
   }
 
   route(path) {
-    if (this.#shouldRedirectToAuthenticationPath(path))
+    if (this.#shouldRedirectToAuthenticationPath(path)) {
       return DEFAULT_AUTHENTICATION_PATH;
+    }
 
-    if (this.#shouldRedirectToPublicPath(path))
-      return DEFAULT_PUBLIC_PATH;
+    if (this.#shouldRedirectToPublicPath(path)) return DEFAULT_PUBLIC_PATH;
 
     return path;
   }
@@ -34,10 +34,10 @@ export default class RouteAuthorizer {
   }
 
   #isAuthenticationPath(path) {
-    return ~AUTHENTICATION_PATHS.findIndex(e => e === path);
+    return AUTHENTICATION_PATHS.findIndex((e) => e === path) !== -1;
   }
 
   #isProtectedPath(path) {
-    return ~PROTECTED_PATHS.findIndex(e => e === path);
+    return PROTECTED_PATHS.findIndex((e) => e === path) !== -1;
   }
 }

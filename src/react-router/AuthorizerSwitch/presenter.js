@@ -9,7 +9,7 @@ export default class Presenter {
     const authorizedPathname = this.#routeAuthorizer.route(location.pathname);
     const shouldRedirect = location.pathname !== authorizedPathname;
 
-    if (shouldRedirect)
+    if (shouldRedirect) {
       return {
         shouldRedirect,
         newLocation: {
@@ -19,7 +19,8 @@ export default class Presenter {
           },
         },
       };
+    }
 
-    return {shouldRedirect};
+    return { shouldRedirect };
   }
 }

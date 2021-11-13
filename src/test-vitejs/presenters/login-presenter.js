@@ -3,12 +3,12 @@ import Auth from '../authenticator.js';
 export default class LoginPresenter {
   static BAD_SIGN_IN_MSG = 'Wrong email or password';
   static BAD_EMAIL_FORMAT_MSG = 'Email should be correct format';
-  static BAD_PASSWORD_FORMAT_MSG = `Password should be 8 characters or longer`;
+  static BAD_PASSWORD_FORMAT_MSG = 'Password should be 8 characters or longer';
   static ERROR_MSG_MAP = {
     [null]: '',
     [Auth.EMAIL_FORMAT_ERROR]: LoginPresenter.BAD_EMAIL_FORMAT_MSG,
     [Auth.PASSWORD_FORMAT_ERROR]: LoginPresenter.BAD_PASSWORD_FORMAT_MSG,
-    [Auth.BAD_CREDENTIALS_ERROR]: LoginPresenter.BAD_SIGN_IN_MSG
+    [Auth.BAD_CREDENTIALS_ERROR]: LoginPresenter.BAD_SIGN_IN_MSG,
   };
 
   viewModel = {
@@ -21,7 +21,7 @@ export default class LoginPresenter {
     signInButtonLoading: false,
     emailInputDisabled: false,
     passwordInputDisabled: false,
-    createAccountLinkDisabled: false
+    createAccountLinkDisabled: false,
   };
 
   #email = '';
@@ -97,16 +97,14 @@ export default class LoginPresenter {
   }
 
   #validateEmail() {
-    if (!this.#emailTouched)
-      return;
+    if (!this.#emailTouched) return;
 
     this.#authenticator.validateEmail(this.#email);
     this.#emailError = this.#authenticator.emailError;
   }
 
   #validatePassword() {
-    if (!this.#passwordTouched)
-      return;
+    if (!this.#passwordTouched) return;
 
     this.#authenticator.validatePassword(this.#password);
     this.#passwordError = this.#authenticator.passwordError;

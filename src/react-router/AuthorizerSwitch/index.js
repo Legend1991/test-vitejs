@@ -1,1 +1,1 @@
-export {default} from './AuthorizerSwitch';
+export { default } from './AuthorizerSwitch';

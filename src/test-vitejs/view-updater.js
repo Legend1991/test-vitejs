@@ -1,8 +1,9 @@
 export default class ViewUpdater {
   #proxyMap;
 
-  constructor (presenter, view) {
+  constructor(presenter, view) {
     this.#proxyMap = new WeakMap();
+    // eslint-disable-next-line no-constructor-return
     return this.#makeProxy(presenter.viewModel, view);
   }
 
@@ -11,8 +12,7 @@ export default class ViewUpdater {
 
     return new Proxy(viewModel, {
       set(target, property, value, receiver) {
-        if (Reflect.get(target, property) === value)
-          return true;
+        if (Reflect.get(target, property) === value) return true;
 
         const result = Reflect.set(target, property, value, receiver);
         view.update();
@@ -22,16 +22,14 @@ export default class ViewUpdater {
         const value = Reflect.get(target, property);
         const isObject = typeof value === 'object' && value !== null;
 
-        if (!isObject)
-          return value;
+        if (!isObject) return value;
 
-        if (self.#proxyMap.has(value))
-          return self.#proxyMap.get(value);
+        if (self.#proxyMap.has(value)) return self.#proxyMap.get(value);
 
         const newProxy = self.#makeProxy(value, view);
         self.#proxyMap.set(value, newProxy);
         return newProxy;
-      }
+      },
     });
   }
 }

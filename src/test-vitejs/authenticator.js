@@ -43,8 +43,7 @@ export default class Authenticator {
     this.validateEmail(email);
     this.validatePassword(password);
 
-    if (this.passwordError || this.emailError)
-      return;
+    if (this.passwordError || this.emailError) return;
 
     const response = await this.#authGateway.signIn(email, password);
 
@@ -53,7 +52,7 @@ export default class Authenticator {
       this.#passwordError = response.error.type;
       return;
     }
-    
+
     this.#tokenRepository.accessToken = response.result?.accessToken;
     this.#tokenRepository.expiresIn = response.result?.expiresIn;
     this.#tokenRepository.refreshToken = response.result?.refreshToken;

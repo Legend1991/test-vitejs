@@ -1,15 +1,15 @@
-import {deepStrictEqual, strictEqual} from 'assert';
-import {describe, it} from 'mocha';
+import { deepStrictEqual, strictEqual } from 'assert';
+import { describe, it } from 'mocha';
 import Presenter from '../../../src/preact/components/Dropdown/presenter.js';
 
 describe('DropdownPresenter', () => {
-  it(`Provide option list with selected mark, onClick handler ` +
-      `for each option and name, description of a selected option.`, () => {
+  it('Provide option list with selected mark, onClick handler '
+      + 'for each option and name, description of a selected option.', () => {
     let clickedValue = null;
     const clickedIndex = 0;
     const selectedIndex = 1;
     const props = {
-      onSelect(value) {clickedValue = value;},
+      onSelect(value) { clickedValue = value; },
       placeholder: 'Please select an option',
       value: 'option2',
       options: [
@@ -27,11 +27,13 @@ describe('DropdownPresenter', () => {
     };
     const presenter = new Presenter();
 
-    const {name, description, optionList} = presenter.present(props);
+    const {
+      selectedName, selectedDescription, optionList,
+    } = presenter.present(props);
     optionList[clickedIndex].onClick();
 
-    strictEqual(name, props.options[selectedIndex].name);
-    strictEqual(description, props.options[selectedIndex].description);
+    strictEqual(selectedName, props.options[selectedIndex].name);
+    strictEqual(selectedDescription, props.options[selectedIndex].description);
     strictEqual(clickedValue, props.options[clickedIndex].value);
     deepStrictEqual(optionList, [
       {
@@ -53,8 +55,8 @@ describe('DropdownPresenter', () => {
     strictEqual(typeof optionList[1].onClick, 'function');
   });
 
-  it(`Set name as empty string, substitute description with placeholder ` +
-      `and set each option as unselected`, () => {
+  it('Set name as empty string, substitute description with placeholder '
+      + 'and set each option as unselected', () => {
     const props = {
       onSelect() {},
       placeholder: 'Please select an option',
@@ -74,10 +76,12 @@ describe('DropdownPresenter', () => {
     };
     const presenter = new Presenter();
 
-    const {name, description, optionList} = presenter.present(props);
+    const {
+      selectedName, selectedDescription, optionList,
+    } = presenter.present(props);
 
-    strictEqual(name, '');
-    strictEqual(description, props.placeholder);
+    strictEqual(selectedName, '');
+    strictEqual(selectedDescription, props.placeholder);
     deepStrictEqual(optionList, [
       {
         ...props.options[0],

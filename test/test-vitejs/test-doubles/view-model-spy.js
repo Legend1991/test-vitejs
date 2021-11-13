@@ -14,7 +14,7 @@ export default class ViewModelSpy {
           ? `"${value}"` : value;
         log.push(`[ViewModel # ${property}] set: ${v}`);
         return Reflect.set(target, property, value, receiver);
-      }
+      },
     });
   }
 }

@@ -3,20 +3,19 @@ export const ENTER_KEY = 'Enter';
 export default class Controller {
   #onInvite;
 
-  constructor({onInvite}) {
+  constructor({ onInvite }) {
     this.#onInvite = onInvite;
   }
 
-  onInputKeyUp = ({key, target}) => {
-   if (key === ENTER_KEY)
-     this.#invite(target);
-  }
+  onInputKeyUp = ({ key, target }) => {
+    if (key === ENTER_KEY) this.#invite(target);
+  };
 
-  onButtonClick = ({current}) => {
+  onButtonClick = ({ current }) => {
     this.#invite(current);
-  }
+  };
 
-  #invite(inputEl) {
+  #invite(inputEl = {}) {
     this.#onInvite?.(inputEl.value);
     inputEl.value = '';
   }

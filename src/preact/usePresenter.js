@@ -1,9 +1,9 @@
-import {useEffect, useState, useMemo} from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 import Controller from '../test-vitejs/controller';
 import ViewUpdater from '../test-vitejs/view-updater';
 
-export default function usePresenter({makePresenter}) {
+export default function usePresenter({ makePresenter }) {
   const [, setCount] = useState(0);
 
   const presenter = useMemo(makePresenter, []);
@@ -14,9 +14,9 @@ export default function usePresenter({makePresenter}) {
 
   useEffect(() => {
     presenter.viewModel = new ViewUpdater(presenter, {
-      update: () => setCount(c => c + 1),
+      update: () => setCount((c) => c + 1),
     });
   }, []);
 
-  return {controller, model};
+  return { controller, model };
 }

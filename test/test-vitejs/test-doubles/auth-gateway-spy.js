@@ -21,19 +21,20 @@ export default class AuthGatewaySpy {
     const isSignedIn = email === AuthGatewaySpy.CORRECT_EMAIL
       && password === AuthGatewaySpy.CORRECT_PASSWORD;
 
-    if (isSignedIn)
+    if (isSignedIn) {
       return {
         result: {
           accessToken: AuthGatewaySpy.ACCESS_TOKEN_STUB,
           expiresIn: AuthGatewaySpy.EXPIRES_IN_STUB,
           refreshToken: AuthGatewaySpy.REFRESH_TOKEN_STUB,
-        }
+        },
       };
+    }
 
     return {
       error: {
-        type: Authenticator.BAD_CREDENTIALS_ERROR
-      }
+        type: Authenticator.BAD_CREDENTIALS_ERROR,
+      },
     };
   }
 }

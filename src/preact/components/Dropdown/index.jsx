@@ -1,8 +1,18 @@
-import {useMemo} from 'react';
+import React, { useMemo } from 'react';
 import Presenter from './presenter';
 import DropdownView from './DropdownView';
 
 export default function Dropdown(props) {
   const presenter = useMemo(() => new Presenter(), []);
-  return <DropdownView {...presenter.present(props)}/>;
+  const {
+    selectedName, selectedDescription, optionList,
+  } = presenter.present(props);
+
+  return (
+    <DropdownView
+      selectedName={selectedName}
+      selectedDescription={selectedDescription}
+      optionList={optionList}
+    />
+  );
 }
