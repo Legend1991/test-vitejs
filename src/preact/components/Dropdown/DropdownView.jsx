@@ -8,19 +8,16 @@ const SELECTED_COMPONENT_MAP = {
   [false]: <div className={SELECTION_MARK_CLASSES} />,
 };
 
-export default function DropdownView({
-  selectedName, selectedNameHidden, selectedDescription,
-  selectedDescriptionHidden, optionList, placeholder, placeholderHidden,
-}) {
+export default function DropdownView({ model }) {
   const selectedNameClass = classNames('col-start-1 col-end-2', {
-    hidden: selectedNameHidden,
+    hidden: model.selectedNameHidden,
   });
   const selectedDescriptionClass = classNames(
     'truncate col-start-2 col-end-7',
-    { hidden: selectedDescriptionHidden },
+    { hidden: model.selectedDescriptionHidden },
   );
   const placeholderClass = classNames('truncate col-start-1 col-end-7', {
-    hidden: placeholderHidden,
+    hidden: model.placeholderHidden,
   });
 
   return (
@@ -33,16 +30,16 @@ export default function DropdownView({
         }
       >
         <div className={selectedNameClass}>
-          {selectedName}
+          {model.selectedName}
         </div>
         <div className={selectedDescriptionClass}>
           <span className="text-sm opacity-50 whitespace-nowrap font-normal">
-            {selectedDescription}
+            {model.selectedDescription}
           </span>
         </div>
         <div className={placeholderClass}>
           <span className="text-sm opacity-50 whitespace-nowrap font-normal">
-            {placeholder}
+            {model.placeholder}
           </span>
         </div>
       </div>
@@ -53,7 +50,7 @@ export default function DropdownView({
           + 'bg-base-100 rounded-box w-96'
         }
       >
-        {optionList.map(({
+        {model.optionList.map(({
           value, name, description, selected, onClick,
         }) => (
           <li key={value}>

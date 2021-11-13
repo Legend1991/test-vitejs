@@ -27,10 +27,11 @@ describe('DropdownPresenter', () => {
     };
     const presenter = new Presenter();
 
+    presenter.present(props);
     const {
       selectedName, selectedNameHidden, selectedDescription,
       selectedDescriptionHidden, optionList, placeholder, placeholderHidden,
-    } = presenter.present(props);
+    } = presenter.viewModel;
     optionList[clickedIndex].onClick();
 
     strictEqual(selectedName, props.options[selectedIndex].name);
@@ -81,10 +82,11 @@ describe('DropdownPresenter', () => {
     };
     const presenter = new Presenter();
 
+    presenter.present(props);
     const {
       selectedName, selectedNameHidden, selectedDescription,
       selectedDescriptionHidden, optionList, placeholder, placeholderHidden,
-    } = presenter.present(props);
+    } = presenter.viewModel;
 
     strictEqual(selectedName, undefined);
     strictEqual(selectedNameHidden, true);
