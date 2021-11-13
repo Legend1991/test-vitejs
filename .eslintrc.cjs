@@ -26,6 +26,7 @@ module.exports = {
       'unnamedComponents': 'arrow-function'
     }],
     'react/prop-types': ['off', 'always'],
+    'react/react-in-jsx-scope': ['off', 'always'],
     'jsx-a11y/label-has-associated-control': ['off', 'always'],
     'jsx-a11y/no-noninteractive-tabindex': ['off', 'always'],
     'jsx-a11y/anchor-is-valid': ['off', 'always'],

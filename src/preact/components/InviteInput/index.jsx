@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'preact/hooks';
 import InviteInputView from './InviteInputView';
 import Controller from './controller';
 

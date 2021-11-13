@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'preact/hooks';
 import { UserAddIcon } from '@heroicons/react/outline';
 
 export default function InviteInputView({ controller, className }) {

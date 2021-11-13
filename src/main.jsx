@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'preact';
 import { Router, Route } from 'react-router-dom';
 

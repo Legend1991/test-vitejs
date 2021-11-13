@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'preact/hooks';
 import Dropdown from '../components/Dropdown';
 import InviteInput from '../components/InviteInput';
 

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'preact/hooks';
 import { Redirect, Switch, useLocation } from 'react-router-dom';
 
 import Presenter from './presenter.js';

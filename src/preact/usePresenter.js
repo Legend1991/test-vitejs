@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'preact/hooks';
 
 import Controller from '../test-vitejs/controller';
 import ViewUpdater from '../test-vitejs/view-updater';
