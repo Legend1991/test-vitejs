@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckIcon } from '@heroicons/react/solid';
+import classNames from 'classnames';
 
 const SELECTION_MARK_CLASSES = 'w-5 h-5 mr-2 mt-0.5';
 const SELECTED_COMPONENT_MAP = {
@@ -8,8 +9,20 @@ const SELECTED_COMPONENT_MAP = {
 };
 
 export default function DropdownView({
-  selectedName, selectedDescription, optionList,
+  selectedName, selectedNameHidden, selectedDescription,
+  selectedDescriptionHidden, optionList, placeholder, placeholderHidden,
 }) {
+  const selectedNameClass = classNames('col-start-1 col-end-2', {
+    hidden: selectedNameHidden,
+  });
+  const selectedDescriptionClass = classNames(
+    'truncate col-start-2 col-end-7',
+    { hidden: selectedDescriptionHidden },
+  );
+  const placeholderClass = classNames('truncate col-start-1 col-end-7', {
+    hidden: placeholderHidden,
+  });
+
   return (
     <div className="dropdown w-full">
       <div
@@ -19,12 +32,17 @@ export default function DropdownView({
           + 'w-full truncate grid grid-cols-6 gap-4'
         }
       >
-        <div className="col-start-1 col-end-2">
+        <div className={selectedNameClass}>
           {selectedName}
         </div>
-        <div className="truncate col-start-2 col-end-7">
+        <div className={selectedDescriptionClass}>
           <span className="text-sm opacity-50 whitespace-nowrap font-normal">
             {selectedDescription}
+          </span>
+        </div>
+        <div className={placeholderClass}>
+          <span className="text-sm opacity-50 whitespace-nowrap font-normal">
+            {placeholder}
           </span>
         </div>
       </div>

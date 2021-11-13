@@ -28,12 +28,17 @@ describe('DropdownPresenter', () => {
     const presenter = new Presenter();
 
     const {
-      selectedName, selectedDescription, optionList,
+      selectedName, selectedNameHidden, selectedDescription,
+      selectedDescriptionHidden, optionList, placeholder, placeholderHidden,
     } = presenter.present(props);
     optionList[clickedIndex].onClick();
 
     strictEqual(selectedName, props.options[selectedIndex].name);
+    strictEqual(selectedNameHidden, false);
     strictEqual(selectedDescription, props.options[selectedIndex].description);
+    strictEqual(selectedDescriptionHidden, false);
+    strictEqual(placeholder, props.placeholder);
+    strictEqual(placeholderHidden, true);
     strictEqual(clickedValue, props.options[clickedIndex].value);
     deepStrictEqual(optionList, [
       {
@@ -77,11 +82,16 @@ describe('DropdownPresenter', () => {
     const presenter = new Presenter();
 
     const {
-      selectedName, selectedDescription, optionList,
+      selectedName, selectedNameHidden, selectedDescription,
+      selectedDescriptionHidden, optionList, placeholder, placeholderHidden,
     } = presenter.present(props);
 
-    strictEqual(selectedName, '');
-    strictEqual(selectedDescription, props.placeholder);
+    strictEqual(selectedName, undefined);
+    strictEqual(selectedNameHidden, true);
+    strictEqual(selectedDescription, undefined);
+    strictEqual(selectedDescriptionHidden, true);
+    strictEqual(placeholder, props.placeholder);
+    strictEqual(placeholderHidden, false);
     deepStrictEqual(optionList, [
       {
         ...props.options[0],

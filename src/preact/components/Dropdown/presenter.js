@@ -5,8 +5,12 @@ export default class Presenter {
     const selectedOption = options.find((o) => o.value === value);
 
     return {
-      selectedName: selectedOption?.name || '',
-      selectedDescription: selectedOption?.description || placeholder,
+      selectedName: selectedOption?.name,
+      selectedNameHidden: !selectedOption,
+      selectedDescription: selectedOption?.description,
+      placeholder,
+      placeholderHidden: Boolean(selectedOption),
+      selectedDescriptionHidden: !selectedOption,
       optionList: options.map((o) => ({
         ...o,
         selected: o.value === value,
