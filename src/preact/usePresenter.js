@@ -14,6 +14,10 @@ export default function usePresenter({ makePresenter }) {
 
   useEffect(() => {
     presenter.viewModel = new ViewUpdater(presenter, {
+      /**
+       *  Ugly but necessary hack to implement a kind of reactivity
+       *  between View and viewModel inside Presenter
+       */
       update: () => setCount((c) => c + 1),
     });
   }, []);
