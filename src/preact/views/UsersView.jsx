@@ -1,9 +1,11 @@
-import { useState } from 'preact/hooks';
+import { RefreshIcon } from '@heroicons/react/outline';
+
 import Dropdown from '../components/Dropdown';
 import InviteInput from '../components/InviteInput';
+import usePresenter from '../usePresenter';
 
-export default function UsersView() {
-  const [value, setValue] = useState('Viewer');
+export default function UsersView(props) {
+  const { controller, model } = usePresenter(props);
 
   return (
     <div className="container mx-auto px-4 space-y-6">
@@ -25,11 +27,11 @@ export default function UsersView() {
           <tr>
             <td>
               <div className="font-bold">Hart Hagerty</div>
-              <div className="text-sm opacity-50">HartH@danhotels.com</div>
+              <div className="text-sm opacity-50">HartH@example.com</div>
             </td>
             <td>
               <Dropdown
-                onSelect={setValue}
+                onSelect={() => {}}
                 placeholder="Please select a role"
                 options={[
                   {
@@ -48,7 +50,7 @@ export default function UsersView() {
                     description: 'Edit stuff. No adding users.',
                   },
                 ]}
-                value={value}
+                value="Viewer"
               />
             </td>
             <td>
@@ -58,9 +60,25 @@ export default function UsersView() {
             </td>
           </tr>
           <tr>
-            <td>
-              <div className="font-bold">Brice Swyre</div>
-              <div className="text-sm opacity-50">BriceS@danhotels.com</div>
+            <td className="flex flex-row justify-between">
+              {/* <div className="font-bold">Brice Swyre</div> */}
+              <div>
+                <div className="badge badge-error mb-1">
+                  expired
+                </div>
+                <div className="text-sm opacity-50">BriceS@example.com</div>
+              </div>
+              <div
+                data-tip="Resend Invite"
+                className="tooltip tooltip-error"
+              >
+                <button
+                  type="button"
+                  className="btn btn-outline btn-error btn-square"
+                >
+                  <RefreshIcon className="w-6 h-6" />
+                </button>
+              </div>
             </td>
             <td>
               <Dropdown
@@ -95,7 +113,7 @@ export default function UsersView() {
           <tr>
             <td>
               <div className="font-bold">Marjy Ferencz</div>
-              <div className="text-sm opacity-50">MarjyF@danhotels.com</div>
+              <div className="text-sm opacity-50">MarjyF@example.com</div>
             </td>
             <td>
               <Dropdown
@@ -133,7 +151,7 @@ export default function UsersView() {
               <div className="badge badge-info mb-1">
                 invited
               </div>
-              <div className="text-sm opacity-50">YancyT@danhotels.com</div>
+              <div className="text-sm opacity-50">YancyT@example.com</div>
             </td>
             <td>
               <Dropdown

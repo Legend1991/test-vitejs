@@ -25,6 +25,11 @@ export default function InviteInputView({ controller, className }) {
           <UserAddIcon className="w-5 h-5" />
         </button>
       </div>
+      <label className="label">
+        <span className="label-text-alt">
+                  &nbsp;
+        </span>
+      </label>
     </div>
   );
 }
