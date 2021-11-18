@@ -6,6 +6,7 @@ import AuthGatewaySpy from '../test-doubles/auth-gateway-spy.js';
 import AuthenticatorSpy from '../test-doubles/authenticator-spy.js';
 import NavigatorSpy from '../test-doubles/navigator-spy.js';
 import ViewModelSpy from '../test-doubles/view-model-spy.js';
+import Utils from '../../utils.js';
 
 describe('LoginPresenter', () => {
   const initialViewModel = {
@@ -37,13 +38,13 @@ describe('LoginPresenter', () => {
 
   describe('Email Input', () => {
     it('Should not validate email until first focus out', () => {
-      presenter.onEmailChange('u');
+      presenter.onEmailChange(Utils.makeChangeEvent('u'));
 
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it('Invalidate empty email', () => {
-      presenter.onEmailChange('');
+      presenter.onEmailChange(Utils.makeChangeEvent(''));
       presenter.onEmailFocusOut();
 
       deepStrictEqual(presenter.viewModel, {
@@ -55,7 +56,7 @@ describe('LoginPresenter', () => {
     });
 
     it('Invalidate wrong email', () => {
-      presenter.onEmailChange('user@email');
+      presenter.onEmailChange(Utils.makeChangeEvent('user@email'));
       presenter.onEmailFocusOut();
 
       deepStrictEqual(presenter.viewModel, {
@@ -67,17 +68,14 @@ describe('LoginPresenter', () => {
     });
 
     it('Validate correct email', () => {
-      presenter.onEmailChange('user@email.com');
+      presenter.onEmailChange(Utils.makeChangeEvent('user@email.com'));
       presenter.onEmailFocusOut();
 
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it('Validate email after change from wrong to correct format', () => {
-      const WRONG_FORMAT_EMAIL = 'user@email';
-      const CORRECT_FORMAT_EMAIL = 'user@email.com';
-
-      presenter.onEmailChange(WRONG_FORMAT_EMAIL);
+      presenter.onEmailChange(Utils.makeChangeEvent('user@email'));
       presenter.onEmailFocusOut();
 
       deepStrictEqual(presenter.viewModel, {
@@ -87,26 +85,30 @@ describe('LoginPresenter', () => {
         isEmailInputStateError: true,
       });
 
-      presenter.onEmailChange(CORRECT_FORMAT_EMAIL);
+      presenter.onEmailChange(Utils.makeChangeEvent('user@email.com'));
 
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it('Validate email after sign-in click as it was focused out', async () => {
-      presenter.onPasswordChange(AuthGatewaySpy.CORRECT_PASSWORD);
-      presenter.onEmailChange('user@email');
+      presenter.onPasswordChange(
+        Utils.makeChangeEvent(AuthGatewaySpy.CORRECT_PASSWORD),
+      );
+      presenter.onEmailChange(Utils.makeChangeEvent('user@email'));
       await presenter.onSignInClick();
-      presenter.onEmailChange('user@email.com');
+      presenter.onEmailChange(Utils.makeChangeEvent('user@email.com'));
 
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it('Invalidate email after sign-in click '
         + 'as it was focused out', async () => {
-      presenter.onPasswordChange(AuthGatewaySpy.CORRECT_PASSWORD);
-      presenter.onEmailChange('u');
+      presenter.onPasswordChange(
+        Utils.makeChangeEvent(AuthGatewaySpy.CORRECT_PASSWORD),
+      );
+      presenter.onEmailChange(Utils.makeChangeEvent('u'));
       await presenter.onSignInClick();
-      presenter.onEmailChange('us');
+      presenter.onEmailChange(Utils.makeChangeEvent('us'));
 
       deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
@@ -119,13 +121,13 @@ describe('LoginPresenter', () => {
 
   describe('Password Input', () => {
     it('Should not validate password until first focus out', () => {
-      presenter.onPasswordChange('1');
+      presenter.onPasswordChange(Utils.makeChangeEvent('1'));
 
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it('Invalidate empty password', () => {
-      presenter.onPasswordChange('');
+      presenter.onPasswordChange(Utils.makeChangeEvent(''));
       presenter.onPasswordFocusOut();
 
       deepStrictEqual(presenter.viewModel, {
@@ -137,7 +139,7 @@ describe('LoginPresenter', () => {
     });
 
     it('Invalidate to short password length', () => {
-      presenter.onPasswordChange('1234567');
+      presenter.onPasswordChange(Utils.makeChangeEvent('1234567'));
       presenter.onPasswordFocusOut();
 
       deepStrictEqual(presenter.viewModel, {
@@ -149,17 +151,14 @@ describe('LoginPresenter', () => {
     });
 
     it('Validate correct password length', () => {
-      presenter.onPasswordChange('12345678');
+      presenter.onPasswordChange(Utils.makeChangeEvent('12345678'));
       presenter.onPasswordFocusOut();
 
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it('Validate password change from wrong to correct length', () => {
-      const WRONG_LENGTH_PASSWORD = '1234567';
-      const CORRECT_LENGTH_PASSWORD = '12345678';
-
-      presenter.onPasswordChange(WRONG_LENGTH_PASSWORD);
+      presenter.onPasswordChange(Utils.makeChangeEvent('1234567'));
       presenter.onPasswordFocusOut();
 
       deepStrictEqual(presenter.viewModel, {
@@ -169,27 +168,31 @@ describe('LoginPresenter', () => {
         isPasswordInputStateError: true,
       });
 
-      presenter.onPasswordChange(CORRECT_LENGTH_PASSWORD);
+      presenter.onPasswordChange(Utils.makeChangeEvent('12345678'));
 
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it('Validate password after sign-in click '
         + 'as it was focused out', async () => {
-      presenter.onEmailChange(AuthGatewaySpy.CORRECT_EMAIL);
-      presenter.onPasswordChange('1234567');
+      presenter.onEmailChange(
+        Utils.makeChangeEvent(AuthGatewaySpy.CORRECT_EMAIL),
+      );
+      presenter.onPasswordChange(Utils.makeChangeEvent('1234567'));
       await presenter.onSignInClick();
-      presenter.onPasswordChange('12345678');
+      presenter.onPasswordChange(Utils.makeChangeEvent('12345678'));
 
       deepStrictEqual(presenter.viewModel, initialViewModel);
     });
 
     it('Invalidate password after sign-in click '
         + 'as it was focused out', async () => {
-      presenter.onEmailChange(AuthGatewaySpy.CORRECT_EMAIL);
-      presenter.onPasswordChange('1');
+      presenter.onEmailChange(
+        Utils.makeChangeEvent(AuthGatewaySpy.CORRECT_EMAIL),
+      );
+      presenter.onPasswordChange(Utils.makeChangeEvent('1'));
       await presenter.onSignInClick();
-      presenter.onPasswordChange('12');
+      presenter.onPasswordChange(Utils.makeChangeEvent('12'));
 
       deepStrictEqual(presenter.viewModel, {
         ...initialViewModel,
@@ -237,8 +240,12 @@ describe('LoginPresenter', () => {
 
     it('Disable form, clear errors, try to sign-in, '
         + 'show errors, enable form', async () => {
-      presenter.onEmailChange(AuthGatewaySpy.WRONG_EMAIL);
-      presenter.onPasswordChange(AuthGatewaySpy.WRONG_PASSWORD);
+      presenter.onEmailChange(
+        Utils.makeChangeEvent(AuthGatewaySpy.WRONG_EMAIL),
+      );
+      presenter.onPasswordChange(
+        Utils.makeChangeEvent(AuthGatewaySpy.WRONG_PASSWORD),
+      );
 
       log.length = 0;
 
@@ -276,8 +283,12 @@ describe('LoginPresenter', () => {
 
     it('Disable form, clear errors, sign-in, '
         + 'navigate to about, enable form', async () => {
-      presenter.onEmailChange(AuthGatewaySpy.CORRECT_EMAIL);
-      presenter.onPasswordChange(AuthGatewaySpy.CORRECT_PASSWORD);
+      presenter.onEmailChange(
+        Utils.makeChangeEvent(AuthGatewaySpy.CORRECT_EMAIL),
+      );
+      presenter.onPasswordChange(
+        Utils.makeChangeEvent(AuthGatewaySpy.CORRECT_PASSWORD),
+      );
 
       log.length = 0;
 

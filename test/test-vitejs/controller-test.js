@@ -4,7 +4,6 @@ import Controller from '../../src/test-vitejs/controller.js';
 
 describe('Controller', () => {
   let presenter;
-  let view;
   let controller;
 
   beforeEach(() => {
@@ -14,30 +13,21 @@ describe('Controller', () => {
       c: [],
       d: true,
       e: null,
-      invokedArg: null,
-      f(a) {
-        this.invokedArg = a;
-      },
-    };
-    view = {
       invokedArgs: null,
-      extractUserInput(...args) {
+      f(...args) {
         this.invokedArgs = args;
-        return args[0];
       },
     };
-    controller = new Controller(presenter, view);
+    controller = new Controller(presenter);
   });
 
   it('Only provide access to presenter methods', () => {
-    strictEqual(view.invokedArgs, null);
-
     strictEqual(presenter.a, 1);
     deepStrictEqual(presenter.b, {});
     deepStrictEqual(presenter.c, []);
     strictEqual(presenter.d, true);
     strictEqual(presenter.e, null);
-    strictEqual(presenter.invokedArg, null);
+    strictEqual(presenter.invokedArgs, null);
     strictEqual(typeof presenter.f, 'function');
 
     strictEqual(controller.a, undefined);
@@ -45,8 +35,9 @@ describe('Controller', () => {
     strictEqual(controller.c, undefined);
     strictEqual(controller.d, undefined);
     strictEqual(controller.e, undefined);
-    strictEqual(controller.invokedArg, undefined);
+    strictEqual(controller.invokedArgs, undefined);
     strictEqual(typeof controller.f, 'function');
+    strictEqual(controller.f, presenter.f);
   });
 
   it('Process the arguments with the view\'s extractUserInput method '
@@ -55,7 +46,6 @@ describe('Controller', () => {
 
     controller.f(...args);
 
-    deepStrictEqual(view.invokedArgs, args);
-    strictEqual(presenter.invokedArg, args[0]);
+    deepStrictEqual(presenter.invokedArgs, args);
   });
 });

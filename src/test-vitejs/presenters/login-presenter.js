@@ -37,12 +37,12 @@ export default class LoginPresenter {
     this.#navigator = navigator;
   }
 
-  onEmailChange(value) {
+  onEmailChange({ target: { value } }) {
     this.#email = value;
     this.#validateEmail();
   }
 
-  onPasswordChange(value) {
+  onPasswordChange({ target: { value } }) {
     this.#password = value;
     this.#validatePassword();
   }
