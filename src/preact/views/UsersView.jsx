@@ -11,8 +11,13 @@ export default function UsersView(props) {
     <div className="container mx-auto px-4 space-y-6">
       <div className="min-w-min w-9/12 mx-auto">
         <InviteInput
+          isStatePrimary={model.isInviteEmailInputStatePrimary}
+          isStateError={model.isInviteEmailInputStateError}
+          error={model.inviteEmailError}
+          onChange={controller.onInviteEmailChange}
+          onKeyUp={controller.onInviteKeyUp}
           className="min-w-min w-5/12 mr-auto"
-          onInvite={(v) => console.log('[UsersView.onInvite] value:', v)}
+          onInvite={controller.onInviteClick}
         />
       </div>
       <table className="table min-w-min w-9/12 mx-auto table-fixed">
@@ -60,7 +65,7 @@ export default function UsersView(props) {
             </td>
           </tr>
           <tr>
-            <td className="flex flex-row justify-between">
+            <td className="flex flex-row justify-between items-center">
               {/* <div className="font-bold">Brice Swyre</div> */}
               <div>
                 <div className="badge badge-error mb-1">
@@ -70,13 +75,13 @@ export default function UsersView(props) {
               </div>
               <div
                 data-tip="Resend Invite"
-                className="tooltip tooltip-error"
+                className="tooltip tooltip-error z-10"
               >
                 <button
                   type="button"
-                  className="btn btn-outline btn-error btn-square"
+                  className="btn btn-outline btn-error btn-square btn-xs"
                 >
-                  <RefreshIcon className="w-6 h-6" />
+                  <RefreshIcon className="w-4 h-4" />
                 </button>
               </div>
             </td>
